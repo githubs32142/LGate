@@ -37,6 +37,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 public class MainWindow extends javax.swing.JFrame {
+    boolean siatka;
     String toolsDrawing;
     ObszarRoboczy obszarRysowania= new ObszarRoboczy();
     JScrollPane scroll=new JScrollPane();
@@ -45,6 +46,7 @@ public class MainWindow extends javax.swing.JFrame {
     DefaultTableModel modelTable;
     public MainWindow() {
         initComponents();
+        siatka=true;
         toolsDrawing="AND";
         this.setBounds(0, 0, 1200, 740);
         workSpace.add(new Rysunki());
@@ -75,9 +77,9 @@ public class MainWindow extends javax.swing.JFrame {
         tabela = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jToggleButton2 = new javax.swing.JToggleButton();
         jToggleButton4 = new javax.swing.JToggleButton();
@@ -135,11 +137,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         jToolBar2.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/open.png"))); // NOI18N
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton1);
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/nowakarta.png"))); // NOI18N
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jButton3);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/openfile.png"))); // NOI18N
         jButton2.setFocusable(false);
@@ -147,11 +149,11 @@ public class MainWindow extends javax.swing.JFrame {
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton2);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/nowakarta.png"))); // NOI18N
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton3);
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/open.png"))); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jButton1);
         jToolBar2.add(jSeparator1);
 
         buttonGroup1.add(jToggleButton2);
@@ -280,6 +282,11 @@ public class MainWindow extends javax.swing.JFrame {
         jToggleButton5.setFocusable(false);
         jToggleButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton5ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jToggleButton5);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/delete.png"))); // NOI18N
@@ -291,7 +298,7 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 323, Short.MAX_VALUE))
+                .addGap(0, 344, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -314,7 +321,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(1, 1, 1)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(557, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,6 +379,11 @@ public class MainWindow extends javax.swing.JFrame {
     private void tabelaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaKeyReleased
         
     }//GEN-LAST:event_tabelaKeyReleased
+
+    private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
+        siatka=!siatka;
+        repaint();
+    }//GEN-LAST:event_jToggleButton5ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -518,10 +530,9 @@ public class MainWindow extends javax.swing.JFrame {
         Graphics2D g2D = (Graphics2D) g;
         RenderingHints rh = new RenderingHints( RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         rh.put(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);        
-         ((Graphics2D)g).setStroke(new BasicStroke(0.5f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
+         ((Graphics2D)g).setStroke(new BasicStroke(1.2f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
          ((Graphics2D)g).setRenderingHints(rh);
-
-         //if(siatka%2==0)
+         if(siatka)
          {
             g2D.setColor(new java.awt.Color(173, 216, 230));
             for(int i=0;i<this.getHeight();i+=16)
