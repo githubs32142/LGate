@@ -1,0 +1,782 @@
+package apk.Window;
+
+import apk.Class.Line;
+import apk.Class.LogicGate;
+import apk.Class.LogicPoint;
+import apk.Window.MainWindow.Rysunki;
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.accessibility.Accessible;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+
+public class MainWindow extends javax.swing.JFrame {
+    String toolsDrawing;
+    ObszarRoboczy obszarRysowania= new ObszarRoboczy();
+    JScrollPane scroll=new JScrollPane();
+    List<Rysunki> workSpace = new ArrayList<>();
+    String data[][]={{"Obiekt:", "-"},{"ID:", "-" }};
+    DefaultTableModel modelTable;
+    public MainWindow() {
+        initComponents();
+        toolsDrawing="AND";
+        this.setBounds(0, 0, 1200, 740);
+        workSpace.add(new Rysunki());
+        workSpace.get(workSpace.size()-1).setPreferredSize(new Dimension(2000, 3000));
+        workSpace.get(workSpace.size()-1).setBackground(Color.white);
+        this.setLayout(new BorderLayout());
+        this.add(BorderLayout.NORTH,jPanel2);
+        this.add(BorderLayout.WEST,jPanel1);
+        scroll.getViewport().setView(workSpace.get(workSpace.size()-1));
+        scroll.setHorizontalScrollBarPolicy(
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scroll.setVerticalScrollBarPolicy(
+        ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.add(BorderLayout.CENTER,obszarRysowania);
+        obszarRysowania.setVisible(true);
+        obszarRysowania.addTab("Obszar rysowania 1",scroll);
+        modelTable=(DefaultTableModel) tabela.getModel();
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jSeparator3 = new javax.swing.JSeparator();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabela = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jToolBar2 = new javax.swing.JToolBar();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jToggleButton4 = new javax.swing.JToggleButton();
+        jToggleButton6 = new javax.swing.JToggleButton();
+        jToggleButton3 = new javax.swing.JToggleButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton7 = new javax.swing.JToggleButton();
+        jToggleButton8 = new javax.swing.JToggleButton();
+        jToggleButton9 = new javax.swing.JToggleButton();
+        jToggleButton10 = new javax.swing.JToggleButton();
+        jToggleButton11 = new javax.swing.JToggleButton();
+        jToggleButton5 = new javax.swing.JToggleButton();
+        jButton4 = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 1, new java.awt.Color(0, 0, 0)));
+
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nazwa", "Właściwości"
+            }
+        ));
+        tabela.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tabelaKeyReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabela);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(243, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+
+        jToolBar2.setRollover(true);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/open.png"))); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jButton1);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/openfile.png"))); // NOI18N
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jButton2);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/nowakarta.png"))); // NOI18N
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jButton3);
+        jToolBar2.add(jSeparator1);
+
+        buttonGroup1.add(jToggleButton2);
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/and18.png"))); // NOI18N
+        jToggleButton2.setSelected(true);
+        jToggleButton2.setFocusable(false);
+        jToggleButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton2);
+
+        buttonGroup1.add(jToggleButton4);
+        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/or18.png"))); // NOI18N
+        jToggleButton4.setFocusable(false);
+        jToggleButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton4ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton4);
+
+        buttonGroup1.add(jToggleButton6);
+        jToggleButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/xor18.png"))); // NOI18N
+        jToggleButton6.setFocusable(false);
+        jToggleButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton6ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton6);
+
+        buttonGroup1.add(jToggleButton3);
+        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/nor18.png"))); // NOI18N
+        jToggleButton3.setFocusable(false);
+        jToggleButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton3ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton3);
+
+        buttonGroup1.add(jToggleButton1);
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/not18.png"))); // NOI18N
+        jToggleButton1.setFocusable(false);
+        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton1);
+
+        buttonGroup1.add(jToggleButton7);
+        jToggleButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/nxor18.png"))); // NOI18N
+        jToggleButton7.setFocusable(false);
+        jToggleButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton7ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton7);
+
+        buttonGroup1.add(jToggleButton8);
+        jToggleButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/nand18.png"))); // NOI18N
+        jToggleButton8.setFocusable(false);
+        jToggleButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton8ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton8);
+
+        buttonGroup1.add(jToggleButton9);
+        jToggleButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/select.png"))); // NOI18N
+        jToggleButton9.setFocusable(false);
+        jToggleButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton9ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton9);
+
+        buttonGroup1.add(jToggleButton10);
+        jToggleButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/point.png"))); // NOI18N
+        jToggleButton10.setFocusable(false);
+        jToggleButton10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton10ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton10);
+
+        buttonGroup1.add(jToggleButton11);
+        jToggleButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/line.png"))); // NOI18N
+        jToggleButton11.setFocusable(false);
+        jToggleButton11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToggleButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton11ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jToggleButton11);
+
+        jToggleButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/grid.png"))); // NOI18N
+        jToggleButton5.setSelected(true);
+        jToggleButton5.setFocusable(false);
+        jToggleButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(jToggleButton5);
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/delete.png"))); // NOI18N
+        jToolBar2.add(jButton4);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 323, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        toolsDrawing="NOT";
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        toolsDrawing="AND";
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
+        toolsDrawing="OR";
+    }//GEN-LAST:event_jToggleButton4ActionPerformed
+
+    private void jToggleButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton6ActionPerformed
+       toolsDrawing="XOR";
+    }//GEN-LAST:event_jToggleButton6ActionPerformed
+
+    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
+       toolsDrawing="NOR";
+    }//GEN-LAST:event_jToggleButton3ActionPerformed
+
+    private void jToggleButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton7ActionPerformed
+        toolsDrawing="NXOR";
+    }//GEN-LAST:event_jToggleButton7ActionPerformed
+
+    private void jToggleButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton8ActionPerformed
+        toolsDrawing="NAND";
+    }//GEN-LAST:event_jToggleButton8ActionPerformed
+
+    private void jToggleButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton9ActionPerformed
+        toolsDrawing="TOUCH";
+    }//GEN-LAST:event_jToggleButton9ActionPerformed
+
+    private void jToggleButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton10ActionPerformed
+        toolsDrawing="POINT";
+    }//GEN-LAST:event_jToggleButton10ActionPerformed
+
+    private void jToggleButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton11ActionPerformed
+        toolsDrawing="LINE";
+       // workSpace.get(obszarRysowania.getSelectedIndex()).ifDrawLine=true;
+    }//GEN-LAST:event_jToggleButton11ActionPerformed
+
+    private void tabelaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaKeyReleased
+        
+    }//GEN-LAST:event_tabelaKeyReleased
+
+    public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(new WindowsLookAndFeel() ); 
+                    break;
+                }
+            }
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainWindow().setVisible(true);
+        });
+    }
+ public class Rysunki extends JPanel implements MouseMotionListener,Serializable {
+        List<LogicGate> logicGate= new ArrayList<>();
+        List<LogicPoint> points= new ArrayList<>();
+        List<Line> linePoint= new ArrayList<>();
+        boolean ifDrawLine=false;
+  public Rysunki() {
+      addMouseListener(new  MouseListener() {
+           @Override
+           public void mouseClicked(MouseEvent me) {
+           }
+
+           @Override
+           public void mousePressed(MouseEvent me) {
+               int index=0;
+               if(toolsDrawing.equals("LINE")){
+                   if(linePoint.isEmpty()){
+                       linePoint.add(new Line("LINE",1, me.getX(), me.getY(), me.getX(), me.getY()));
+                   }
+                   else{   
+                       index=linePoint.get(linePoint.size()-1).getIndex()+1;
+                       linePoint.add(new Line("LINE",index, me.getX(), me.getY(),me.getX(), me.getY()));
+                   }
+                   ifDrawLine=true;
+               }
+           }
+           @Override
+           public void mouseReleased(MouseEvent me) {
+           int index=0;
+           if(!toolsDrawing.equals("TOUCH")){
+               if(retunrLogicGate(me.getX(), me.getY())<0){
+                   if(toolsDrawing.equals("NOT")){
+                   if(logicGate.isEmpty()){
+                       logicGate.add(new LogicGate("NOT",1, me.getX(), me.getY(),50.0,50.0));
+                   }
+                   else{   
+                       index=logicGate.get(logicGate.size()-1).getIndex()+1;
+                       logicGate.add(new LogicGate("NOT",index, me.getX(), me.getY(),50.0,50.0));
+                   }
+                   }
+                   if(toolsDrawing.equals("AND")){
+                   if(logicGate.isEmpty()){
+                       logicGate.add(new LogicGate("AND",1, me.getX(), me.getY(),50.0,50.0));
+                   }
+                   else{   
+                       index=logicGate.get(logicGate.size()-1).getIndex()+1;
+                       logicGate.add(new LogicGate("AND",index, me.getX(), me.getY(),50.0,50.0));
+                   }
+                   }
+                   if(toolsDrawing.equals("NAND")){
+                   if(logicGate.isEmpty()){
+                       logicGate.add(new LogicGate("NAND",1, me.getX(), me.getY(),45.0,45.0));
+                   }
+                   else{   
+                       index=logicGate.get(logicGate.size()-1).getIndex()+1;
+                       logicGate.add(new LogicGate("NAND",index, me.getX(), me.getY(),45.0,45.0));
+                   }
+                   }
+                   if(toolsDrawing.equals("OR")){
+                   if(logicGate.isEmpty()){
+                       logicGate.add(new LogicGate("OR",1, me.getX(), me.getY(),50.0,40.0));
+                   }
+                   else{   
+                       index=logicGate.get(logicGate.size()-1).getIndex()+1;
+                       logicGate.add(new LogicGate("OR",index, me.getX(), me.getY(),50.0,40.0));
+                   }
+                   }
+                   if(toolsDrawing.equals("NOR")){
+                   if(logicGate.isEmpty()){
+                       logicGate.add(new LogicGate("NOR",1, me.getX(), me.getY(),50.0,40.0));
+                   }
+                   else{   
+                       index=logicGate.get(logicGate.size()-1).getIndex()+1;
+                       logicGate.add(new LogicGate("NOR",index, me.getX(), me.getY(),50.0,40.0));
+                   }
+                   }
+                   if(toolsDrawing.equals("XOR")){
+                   if(logicGate.isEmpty()){
+                       logicGate.add(new LogicGate("XOR",1, me.getX(), me.getY(),60.0,50.0));
+                   }
+                   else{   
+                       index=logicGate.get(logicGate.size()-1).getIndex()+1;
+                       logicGate.add(new LogicGate("XOR",index, me.getX(), me.getY(),60.0,50.0));
+                   }
+                   }
+                   if(toolsDrawing.equals("NXOR")){
+                   if(logicGate.isEmpty()){
+                       logicGate.add(new LogicGate("NXOR",1, me.getX(), me.getY(),55.0,40.0));
+                   }
+                   else{   
+                       index=logicGate.get(logicGate.size()-1).getIndex()+1;
+                       logicGate.add(new LogicGate("NXOR",index, me.getX(), me.getY(),55.0,40.0));
+                   }
+                   }
+               }
+           }
+           if(toolsDrawing.equals("POINT")){
+               if(retunrPoint(me.getX(),me.getY())<0){
+                   if(points.isEmpty()){
+                       points.add(new LogicPoint(true,"POINT", 1, me.getX(),me.getY()));
+                   }
+                   else{   
+                       index=points.get(points.size()-1).getIndex()+1;
+                       points.add(new LogicPoint(true,"POINT", 1, me.getX(),me.getY()));
+                   }
+               }
+           }
+           ifDrawLine=false;
+               repaint();
+           }
+
+           @Override
+           public void mouseEntered(MouseEvent me) {
+              
+           }
+
+           @Override
+           public void mouseExited(MouseEvent me) {
+              
+           }
+      } );
+      addMouseMotionListener(this);
+  }
+  @Override
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+        double maksimum=0;
+        double minimum=10000;
+        Graphics2D g2D = (Graphics2D) g;
+        RenderingHints rh = new RenderingHints( RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        rh.put(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);        
+         ((Graphics2D)g).setStroke(new BasicStroke(0.5f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
+         ((Graphics2D)g).setRenderingHints(rh);
+
+         //if(siatka%2==0)
+         {
+            g2D.setColor(new java.awt.Color(173, 216, 230));
+            for(int i=0;i<this.getHeight();i+=16)
+            {
+            g2D.drawLine(0, i,this.getWidth(),i);
+            }
+            for(int i=0;i<this.getHeight();i+=16)
+            {
+            g2D.drawLine(i,0,i,this.getHeight()); 
+            } 
+         }
+         g2D.setStroke(new BasicStroke(1.2f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
+         g2D.setColor(Color.RED);
+         for(int i=0;i<logicGate.size();i++){
+              BufferedImage image= null;
+        try {
+            if(logicGate.get(i).getLabel().equals("NOT")){
+               image = ImageIO.read(getClass().getResource("/apk/Resource/Gates/not.png"));
+            }
+            if(logicGate.get(i).getLabel().equals("AND")){
+               image = ImageIO.read(getClass().getResource("/apk/Resource/Gates/and.png"));
+            }
+            if(logicGate.get(i).getLabel().equals("NAND")){
+               image = ImageIO.read(getClass().getResource("/apk/Resource/Gates/nand.png"));
+            }
+            if(logicGate.get(i).getLabel().equals("OR")){
+               image = ImageIO.read(getClass().getResource("/apk/Resource/Gates/or.png")); 
+            }
+            if(logicGate.get(i).getLabel().equals("NOR")){
+               image = ImageIO.read(getClass().getResource("/apk/Resource/Gates/nor.png")); 
+            }
+            if(logicGate.get(i).getLabel().equals("XOR")){
+               image = ImageIO.read(getClass().getResource("/apk/Resource/Gates/xor.png"));
+            }
+            if(logicGate.get(i).getLabel().equals("NXOR")){
+               image = ImageIO.read(getClass().getResource("/apk/Resource/Gates/nxor.png"));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            g2D.drawImage(image,(int) logicGate.get(i).getX(),(int) logicGate.get(i).getY() , this);
+            logicGate.get(i).drawGate(g2D);
+         }// koniec rysowania bramek logicznych
+         for(LogicPoint lp:points){
+             lp.drawGate(g2D);
+         }// koniec rysowania pointów
+         for(int i=0;i<linePoint.size();i++){
+             linePoint.get(i).drawLine(g2D);
+         }
+         
+  }
+ 
+           @Override
+           public void mouseDragged(MouseEvent evt) {
+               System.out.println(toolsDrawing);
+               if(toolsDrawing.equals("LINE")){
+                   if(ifDrawLine==true){
+                       System.out.println(evt.getX());
+                       linePoint.get(linePoint.size()-1).setXY2(evt.getX(),evt.getY());
+                   }
+               }
+               repaint();
+            }
+        @Override
+        public void mouseMoved(MouseEvent me) {
+            
+        }
+        public int retunrLogicGate(int x,int y){ 
+               for(int i=0;i<logicGate.size();i++){
+                      if(logicGate.get(i).contains(x, y)){
+                       return i;
+                   } 
+               }
+               return -1;
+        }
+        public int retunrPoint(int x,int y){ 
+               for(int i=0;i<points.size();i++){
+                      if(points.get(i).contains(x, y)){
+                       return i;
+                   } 
+               }
+               return -1;
+        }
+    }	
+    
+    class ObszarRoboczy extends JTabbedPane implements SwingConstants, Accessible {
+        JToolBar toolBar= new JToolBar();    
+	private PanelObszaru PanelDoZamkniecia = new PanelObszaru(this);
+        @Override
+	public void paint(Graphics g){
+		super.paint(g);
+		PanelDoZamkniecia.paint(g);
+	}
+        @Override
+	public void addTab(String title, Component component) {
+		super.addTab(title+"     ", component);
+	}
+	public String getTabTitleAt(int index) {
+		return super.getTitleAt(index).trim();
+	}
+private class PanelObszaru implements MouseListener, MouseMotionListener  {
+    private ObszarRoboczy  obszar;
+    private int Xzamkniecia = 0 ,Yzamkniecia = 0, pozycjaKursoraX = 0, pozycjaKursoraY = 0;
+    private int zaznaczenie;
+    private final int  szerokosc = 7, wysokosc = 7;
+    private Rectangle rectangle = new Rectangle(0,0,szerokosc, wysokosc);
+    private PanelObszaru(){}
+    public PanelObszaru(ObszarRoboczy pane) 
+    {
+        obszar = pane;
+        obszar.addMouseMotionListener(this);
+        obszar.addMouseListener(this);
+    }
+    @Override
+    public void mouseEntered(MouseEvent me) {}
+    @Override
+    public void mouseExited(MouseEvent me) {}
+    @Override
+    public void mousePressed(MouseEvent me) {}
+    @Override
+    public void mouseClicked(MouseEvent me) {}
+    @Override
+    public void mouseDragged(MouseEvent me) {}
+    @Override
+    public void mouseReleased(MouseEvent me) 
+    {
+        if(me.getButton()==MouseEvent.BUTTON3)
+        {
+
+        }
+        rectangle.x = Xzamkniecia;
+        rectangle.y = Yzamkniecia;
+        if(rectangle.contains(me.getX(),me.getY()))
+        {
+            if (zaznaczenie >0){   
+               // workSpace.remove(zaznaczenie);
+		
+            }
+            zaznaczenie = obszar.getSelectedIndex(); 
+        }
+    }
+    @Override
+    public void mouseMoved(MouseEvent me){
+    pozycjaKursoraX = me.getX();
+    pozycjaKursoraY = me.getY();
+    zaznaczenie=CzyObszarRysowania(pozycjaKursoraX, pozycjaKursoraY);
+    if(zaznaczenie>=0){
+//        ustawKursor();
+        obszar.repaint();
+    } 
+    }
+    private void ustawKursor(){
+    if(obszar.getTabCount()>0)
+    {
+        rectangle.x = Xzamkniecia;
+	rectangle.y = Yzamkniecia;       
+        if(rectangle.contains(pozycjaKursoraX, pozycjaKursoraY))
+        {
+            obszar.setCursor(new Cursor(Cursor.HAND_CURSOR));	
+            if(zaznaczenie >=0)
+            {
+                obszar.setToolTipTextAt(zaznaczenie, "Zamknij " +obszar.getTitleAt(zaznaczenie));
+            }
+        }
+            else
+            {
+                obszar.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                if(!obszar.getTitleAt(zaznaczenie).equals("Diagram     ")){
+                    if(zaznaczenie >=0)
+                {
+               // if(workSpace.get(zaznaczenie).choisedNet==0)
+               // {
+                //    obszar.setToolTipTextAt(zaznaczenie,"PT-sieć");
+               // }
+                                }
+                }				
+            }
+        }
+    }
+    public void paint(Graphics g){
+        int tabCount = obszar.getTabCount();
+        for(int j = 0; j < tabCount; j++)
+        {
+            Graphics2D g2 = (Graphics2D) g;
+            int x = obszar.getBoundsAt(j).x + obszar.getBoundsAt(j).width -szerokosc-7;
+            int y = obszar.getBoundsAt(j).y +5;
+            RenderingHints rh = new RenderingHints(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        rh.put(RenderingHints.KEY_RENDERING,
+               RenderingHints.VALUE_RENDER_QUALITY);
+            g2.setRenderingHints(rh);
+            g2.setColor( new java.awt.Color(102,102,102));
+            g2.setStroke(new BasicStroke(2.0f, BasicStroke.JOIN_MITER, BasicStroke.CAP_ROUND));
+            g2.drawLine(x, y+2, x + szerokosc, y+2 + wysokosc);
+            g2.setStroke(new BasicStroke(2.0f, BasicStroke.JOIN_MITER, BasicStroke.CAP_ROUND));
+            g2.drawLine(x + szerokosc, y+2, x, y+2 + wysokosc); 
+            if(CzyObszarZamkniecia(x,y))
+            {
+                g2.setColor( new java.awt.Color(210,28,41));
+                g2.fillOval(x-3, y-1, 14, 14);
+                g2.setColor( Color.white);
+             g2.setStroke(new BasicStroke(1.7f, BasicStroke.JOIN_MITER, BasicStroke.CAP_ROUND));
+            g2.drawLine(x, y+2, x + szerokosc, y+2 + wysokosc);
+            g2.drawLine(x + szerokosc, y+2, x, y+2 + wysokosc);  
+            } 
+            
+            
+        }
+                        
+    }
+		private boolean CzyObszarZamkniecia(int x, int y) {
+			return  Math.abs(x-pozycjaKursoraX)<szerokosc && Math.abs(y-pozycjaKursoraY)<wysokosc;
+		}        
+		private int CzyObszarRysowania(int x, int y) {
+			int licznikObszarowRysowania = obszar.getTabCount();
+			for(int j = 0; j < licznikObszarowRysowania; j++)
+                        {
+                        if(obszar.getBoundsAt(j).contains(pozycjaKursoraX, pozycjaKursoraY))
+                        {
+                            Xzamkniecia = obszar.getBoundsAt(j).x + obszar.getBoundsAt(j).width -szerokosc-7;
+                            Yzamkniecia = obszar.getBoundsAt(j).y +5;					
+					return j;
+			}
+                        }
+			return -1;
+                }
+      }	
+   }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton10;
+    private javax.swing.JToggleButton jToggleButton11;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JToggleButton jToggleButton3;
+    private javax.swing.JToggleButton jToggleButton4;
+    private javax.swing.JToggleButton jToggleButton5;
+    private javax.swing.JToggleButton jToggleButton6;
+    private javax.swing.JToggleButton jToggleButton7;
+    private javax.swing.JToggleButton jToggleButton8;
+    private javax.swing.JToggleButton jToggleButton9;
+    private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JTable tabela;
+    // End of variables declaration//GEN-END:variables
+}
