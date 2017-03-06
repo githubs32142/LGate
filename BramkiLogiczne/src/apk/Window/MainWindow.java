@@ -15,6 +15,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -27,14 +29,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 public class MainWindow extends javax.swing.JFrame {
     boolean siatka;
@@ -42,8 +48,14 @@ public class MainWindow extends javax.swing.JFrame {
     ObszarRoboczy obszarRysowania= new ObszarRoboczy();
     JScrollPane scroll=new JScrollPane();
     List<Rysunki> workSpace = new ArrayList<>();
-    String data[][]={{"Obiekt:", "-"},{"ID:", "-" }};
+    String data[][]={{"Obiekt:", "-"},{"ID:", "-" },{"Ilość wejść:", "-" }};
     DefaultTableModel modelTable;
+    List<TableCellEditor> editors = new ArrayList<TableCellEditor>(3);
+    String[] items1 = { "2","3","4" };
+    String[] columnNames = {"Nazwa","Właściwości"};
+    JComboBox comboBox1;
+    JTable tabela;
+    JScrollPane jScrollPane1;
     public MainWindow() {
         initComponents();
         siatka=true;
@@ -54,7 +66,29 @@ public class MainWindow extends javax.swing.JFrame {
         workSpace.get(workSpace.size()-1).setBackground(Color.white);
         this.setLayout(new BorderLayout());
         this.add(BorderLayout.NORTH,jPanel2);
-        this.add(BorderLayout.WEST,jPanel1);
+        jPanel1.setBounds(100,100, 200, 1200 );
+        comboBox1 = new JComboBox( items1 );
+        DefaultCellEditor dce1 = new DefaultCellEditor( comboBox1 );
+        editors.add( dce1 );
+        //modelTable=(DefaultTableModel) tabela.getModel();
+         modelTable = new DefaultTableModel(data, columnNames);
+         tabela = new JTable(modelTable){
+            public TableCellEditor getCellEditor(int row, int column)
+            {
+                int modelColumn = convertColumnIndexToModel( column );
+                if(workSpace.get(obszarRysowania.getSelectedIndex()).indexGate>=0){
+                    if (modelColumn == 1 && row==2 )
+                    return editors.get(0);
+                }
+                    return super.getCellEditor(row, column);
+            }
+        };
+        tabela.setSize(200, 100);
+        jScrollPane1 = new JScrollPane(tabela);
+        jScrollPane1.setSize(240,200);
+        //jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(jScrollPane1);
+       this.add(BorderLayout.WEST,jPanel1);
         scroll.getViewport().setView(workSpace.get(workSpace.size()-1));
         scroll.setHorizontalScrollBarPolicy(
         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -63,7 +97,15 @@ public class MainWindow extends javax.swing.JFrame {
         this.add(BorderLayout.CENTER,obszarRysowania);
         obszarRysowania.setVisible(true);
         obszarRysowania.addTab("Obszar rysowania 1",scroll);
-        modelTable=(DefaultTableModel) tabela.getModel();
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate;
+                if(index>=0){
+                    workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -73,8 +115,6 @@ public class MainWindow extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabela = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
         jButton3 = new javax.swing.JButton();
@@ -101,36 +141,15 @@ public class MainWindow extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 1, new java.awt.Color(0, 0, 0)));
 
-        tabela.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nazwa", "Właściwości"
-            }
-        ));
-        tabela.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tabelaKeyReleased(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tabela);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGap(0, 239, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(243, Short.MAX_VALUE))
+            .addGap(0, 438, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -319,9 +338,8 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(1, 1, 1)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(557, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,10 +394,6 @@ public class MainWindow extends javax.swing.JFrame {
        // workSpace.get(obszarRysowania.getSelectedIndex()).ifDrawLine=true;
     }//GEN-LAST:event_jToggleButton11ActionPerformed
 
-    private void tabelaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaKeyReleased
-        
-    }//GEN-LAST:event_tabelaKeyReleased
-
     private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
         siatka=!siatka;
         repaint();
@@ -405,10 +419,29 @@ public class MainWindow extends javax.swing.JFrame {
         List<LogicPoint> points= new ArrayList<>();
         List<Line> linePoint= new ArrayList<>();
         boolean ifDrawLine=false;
+        int indexGate=-1,indexPoint=-1;
+        double moveX=0,moveY=0;
   public Rysunki() {
       addMouseListener(new  MouseListener() {
            @Override
            public void mouseClicked(MouseEvent me) {
+               int index;
+               if(toolsDrawing.equals("TOUCH")){
+                   index=retunrLogicGate(me.getX(), me.getY());
+                   indexGate=index;
+                   if(index>=0){
+                       data[0][1]=logicGate.get(index).getLabel();
+                       data[1][1]= String.valueOf(logicGate.get(index).getIndex());
+                       data[2][1]= String.valueOf(logicGate.get(index).getInput());
+                       modelTable.setRowCount(0);
+                       modelTable.addRow(data[0]);
+                       modelTable.addRow(data[1]);
+                       modelTable.addRow(data[2]);
+                   }
+                    else{
+                       modelTable.setRowCount(0);
+                   }
+               }        
            }
 
            @Override
@@ -494,6 +527,10 @@ public class MainWindow extends javax.swing.JFrame {
                    }
                    }
                }
+           }
+           if(toolsDrawing.equals("TOUCH")){
+              indexGate=-1;
+              indexPoint=-1;
            }
            if(toolsDrawing.equals("POINT")){
                if(retunrPoint(me.getX(),me.getY())<0){
@@ -587,11 +624,16 @@ public class MainWindow extends javax.swing.JFrame {
  
            @Override
            public void mouseDragged(MouseEvent evt) {
-               System.out.println(toolsDrawing);
                if(toolsDrawing.equals("LINE")){
                    if(ifDrawLine==true){
                        System.out.println(evt.getX());
                        linePoint.get(linePoint.size()-1).setXY2(evt.getX(),evt.getY());
+                   }
+               }
+               if(toolsDrawing.equals("TOUCH")){
+                   if(indexGate>=0){
+                       logicGate.get(indexGate).setXY(evt.getX()-moveX, evt.getY()-moveY);
+                       repaint();
                    }
                }
                repaint();
@@ -773,7 +815,6 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JToggleButton jToggleButton1;
@@ -788,6 +829,5 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
     private javax.swing.JToggleButton jToggleButton8;
     private javax.swing.JToggleButton jToggleButton9;
     private javax.swing.JToolBar jToolBar2;
-    private javax.swing.JTable tabela;
     // End of variables declaration//GEN-END:variables
 }

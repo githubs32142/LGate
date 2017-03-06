@@ -10,6 +10,7 @@ public class LogicGate extends Rectangle2D.Double{
     private int index;
     Rectangle2D.Double input1,input2,output2;
     Ellipse2D.Double output;
+    private int input;
     public LogicGate(){
         super();
     }
@@ -22,8 +23,23 @@ public class LogicGate extends Rectangle2D.Double{
         super(arg0, arg1, arg2, arg3);
         this.label = label;
         this.index = index;
+        if(!this.label.equals("NOT")){
+         this.setInput(2);   
+        }
+        else{
+         this.setInput(1);   
+        }
         setObramowanie();
     }
+
+    public int getInput() {
+        return input;
+    }
+
+    public void setInput(int input) {
+        this.input = input;
+    }
+    
     public void setX(double x) {
         this.x = x;
     }
