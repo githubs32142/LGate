@@ -13,6 +13,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -52,8 +53,9 @@ public class MainWindow extends javax.swing.JFrame {
     DefaultTableModel modelTable;
     List<TableCellEditor> editors = new ArrayList<TableCellEditor>(3);
     String[] items1 = { "2","3","4" };
+    String[] items2 = { "1" };
     String[] columnNames = {"Nazwa","Właściwości"};
-    JComboBox comboBox1;
+    JComboBox comboBox1,comboBox2;
     JTable tabela;
     JScrollPane jScrollPane1;
     public MainWindow() {
@@ -61,24 +63,32 @@ public class MainWindow extends javax.swing.JFrame {
         siatka=true;
         toolsDrawing="AND";
         this.setBounds(0, 0, 1200, 740);
-        workSpace.add(new Rysunki());
-        workSpace.get(workSpace.size()-1).setPreferredSize(new Dimension(2000, 3000));
-        workSpace.get(workSpace.size()-1).setBackground(Color.white);
         this.setLayout(new BorderLayout());
         this.add(BorderLayout.NORTH,jPanel2);
         jPanel1.setBounds(100,100, 200, 1200 );
         comboBox1 = new JComboBox( items1 );
         DefaultCellEditor dce1 = new DefaultCellEditor( comboBox1 );
         editors.add( dce1 );
+        comboBox2 = new JComboBox( items2 );
+        DefaultCellEditor dce2 = new DefaultCellEditor( comboBox2 );
+        editors.add( dce2 );
         //modelTable=(DefaultTableModel) tabela.getModel();
          modelTable = new DefaultTableModel(data, columnNames);
          tabela = new JTable(modelTable){
             public TableCellEditor getCellEditor(int row, int column)
             {
                 int modelColumn = convertColumnIndexToModel( column );
-                if(workSpace.get(obszarRysowania.getSelectedIndex()).indexGate>=0){
-                    if (modelColumn == 1 && row==2 )
-                    return editors.get(0);
+                if(workSpace.get(obszarRysowania.getSelectedIndex()).indexGate>=0 ){
+                   if(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(workSpace.get(obszarRysowania.getSelectedIndex()).indexGate).getLabel().equals("NOT")){
+                    if (modelColumn == 1 && row==2 ){
+                        return editors.get(1);
+                    }
+                   }
+                 else{
+                       if (modelColumn == 1 && row==2 ){
+                           return editors.get(0);
+                       }
+                   }
                 }
                     return super.getCellEditor(row, column);
             }
@@ -86,26 +96,19 @@ public class MainWindow extends javax.swing.JFrame {
         tabela.setSize(200, 100);
         jScrollPane1 = new JScrollPane(tabela);
         jScrollPane1.setSize(240,200);
-        //jPanel1.setLayout(new BorderLayout());
         jPanel1.add(jScrollPane1);
        this.add(BorderLayout.WEST,jPanel1);
-        scroll.getViewport().setView(workSpace.get(workSpace.size()-1));
-        scroll.setHorizontalScrollBarPolicy(
-        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scroll.setVerticalScrollBarPolicy(
-        ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.add(BorderLayout.CENTER,obszarRysowania);
-        obszarRysowania.setVisible(true);
-        obszarRysowania.addTab("Obszar rysowania 1",scroll);
         comboBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate;
                 if(index>=0){
                     workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
+                    repaint();
                 }
             }
         });
+        addWorkSpace();
     }
 
     @SuppressWarnings("unchecked")
@@ -178,6 +181,7 @@ public class MainWindow extends javax.swing.JFrame {
         buttonGroup1.add(jToggleButton2);
         jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/and18.png"))); // NOI18N
         jToggleButton2.setSelected(true);
+        jToggleButton2.setToolTipText("Rysuj bramkę logiczną AND");
         jToggleButton2.setFocusable(false);
         jToggleButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -190,6 +194,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         buttonGroup1.add(jToggleButton4);
         jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/or18.png"))); // NOI18N
+        jToggleButton4.setToolTipText("Rysuj bramkę logiczną OR");
         jToggleButton4.setFocusable(false);
         jToggleButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -202,6 +207,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         buttonGroup1.add(jToggleButton6);
         jToggleButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/xor18.png"))); // NOI18N
+        jToggleButton6.setToolTipText("Rysuj bramkę logiczną XOR");
         jToggleButton6.setFocusable(false);
         jToggleButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -214,6 +220,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         buttonGroup1.add(jToggleButton3);
         jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/nor18.png"))); // NOI18N
+        jToggleButton3.setToolTipText("Rysuj bramkę logiczną NOR");
         jToggleButton3.setFocusable(false);
         jToggleButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -226,6 +233,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         buttonGroup1.add(jToggleButton1);
         jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/not18.png"))); // NOI18N
+        jToggleButton1.setToolTipText("Rysuj bramkę logiczną NOT");
         jToggleButton1.setFocusable(false);
         jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -352,7 +360,20 @@ public class MainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private  void addWorkSpace(){
+        workSpace.add(new Rysunki());
+        workSpace.get(workSpace.size()-1).setPreferredSize(new Dimension(2000, 3000));
+        workSpace.get(workSpace.size()-1).setBackground(Color.white);
+        JScrollPane scroll=new JScrollPane();
+        scroll.getViewport().setView(workSpace.get(workSpace.size()-1));
+        scroll.setHorizontalScrollBarPolicy(
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scroll.setVerticalScrollBarPolicy(
+        ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        this.add(BorderLayout.CENTER,obszarRysowania);
+        obszarRysowania.setVisible(true);
+        obszarRysowania.addTab("Obszar rysowania "+String.valueOf(workSpace.size()),scroll);
+    }
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         toolsDrawing="NOT";
     }//GEN-LAST:event_jToggleButton1ActionPerformed
@@ -421,6 +442,7 @@ public class MainWindow extends javax.swing.JFrame {
         boolean ifDrawLine=false;
         int indexGate=-1,indexPoint=-1;
         double moveX=0,moveY=0;
+        Point beginingPoint;
   public Rysunki() {
       addMouseListener(new  MouseListener() {
            @Override
@@ -428,6 +450,9 @@ public class MainWindow extends javax.swing.JFrame {
                int index;
                if(toolsDrawing.equals("TOUCH")){
                    index=retunrLogicGate(me.getX(), me.getY());
+                   if(retunrLogicGateInput(me.getX(), me.getY())>=0){
+                       System.out.println("istnieje");
+                   }
                    indexGate=index;
                    if(index>=0){
                        data[0][1]=logicGate.get(index).getLabel();
@@ -612,6 +637,9 @@ public class MainWindow extends javax.swing.JFrame {
         }
             g2D.drawImage(image,(int) logicGate.get(i).getX(),(int) logicGate.get(i).getY() , this);
             logicGate.get(i).drawGate(g2D);
+            if(indexGate==i){
+                logicGate.get(i).drawBorder(g2D);
+            }
          }// koniec rysowania bramek logicznych
          for(LogicPoint lp:points){
              lp.drawGate(g2D);
@@ -645,6 +673,14 @@ public class MainWindow extends javax.swing.JFrame {
         public int retunrLogicGate(int x,int y){ 
                for(int i=0;i<logicGate.size();i++){
                       if(logicGate.get(i).contains(x, y)){
+                       return i;
+                   } 
+               }
+               return -1;
+        }
+        public int retunrLogicGateInput(int x,int y){ 
+               for(int i=0;i<logicGate.size();i++){
+                      if(logicGate.get(i).containsInput(x, y)){
                        return i;
                    } 
                }

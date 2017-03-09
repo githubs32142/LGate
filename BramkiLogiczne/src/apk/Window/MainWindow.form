@@ -158,6 +158,7 @@
                   <Image iconType="3" name="/apk/Resource/Gate18/and18.png"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="Rysuj bramk&#x119; logiczn&#x105; AND"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -174,6 +175,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/apk/Resource/Gate18/or18.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Rysuj bramk&#x119; logiczn&#x105; OR"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -190,6 +192,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/apk/Resource/Gate18/xor18.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Rysuj bramk&#x119; logiczn&#x105; XOR"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -206,6 +209,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/apk/Resource/Gate18/nor18.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Rysuj bramk&#x119; logiczn&#x105; NOR"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -222,6 +226,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/apk/Resource/Gate18/not18.png"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Rysuj bramk&#x119; logiczn&#x105; NOT"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
