@@ -54,8 +54,9 @@ public class MainWindow extends javax.swing.JFrame {
     List<TableCellEditor> editors = new ArrayList<TableCellEditor>(3);
     String[] items1 = { "2","3","4" };
     String[] items2 = { "1" };
+    String[] items3 = { "true","false" };
     String[] columnNames = {"Nazwa","Właściwości"};
-    JComboBox comboBox1,comboBox2;
+    JComboBox comboBox1,comboBox2,comboBox3;
     JTable tabela;
     JScrollPane jScrollPane1;
     public MainWindow() {
@@ -72,13 +73,16 @@ public class MainWindow extends javax.swing.JFrame {
         comboBox2 = new JComboBox( items2 );
         DefaultCellEditor dce2 = new DefaultCellEditor( comboBox2 );
         editors.add( dce2 );
+        comboBox3 = new JComboBox( items3 );
+        DefaultCellEditor dce3 = new DefaultCellEditor( comboBox3 );
+        editors.add(dce3);
         //modelTable=(DefaultTableModel) tabela.getModel();
          modelTable = new DefaultTableModel(data, columnNames);
          tabela = new JTable(modelTable){
             public TableCellEditor getCellEditor(int row, int column)
             {
                 int modelColumn = convertColumnIndexToModel( column );
-                if(workSpace.get(obszarRysowania.getSelectedIndex()).indexGate>=0 ){
+                if(workSpace.get(obszarRysowania.getSelectedIndex()).indexGate>=0  ){
                    if(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(workSpace.get(obszarRysowania.getSelectedIndex()).indexGate).getLabel().equals("NOT")){
                     if (modelColumn == 1 && row==2 ){
                         return editors.get(1);
@@ -90,6 +94,12 @@ public class MainWindow extends javax.swing.JFrame {
                        }
                    }
                 }
+                      if(workSpace.get(obszarRysowania.getSelectedIndex()).indexPoint>=0){
+                        if (modelColumn == 1 && row==2 ){
+                           return editors.get(2);
+                       }
+                    }
+
                     return super.getCellEditor(row, column);
             }
         };
@@ -104,6 +114,22 @@ public class MainWindow extends javax.swing.JFrame {
                 int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate;
                 if(index>=0){
                     workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
+                    repaint();
+                }
+            }
+        });
+        comboBox3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexPoint;
+                if(index>=0){
+                    if(comboBox3.getSelectedIndex()==0){
+                        workSpace.get(obszarRysowania.getSelectedIndex()).points.get(index).setState(true);
+                    }
+                else{
+                        workSpace.get(obszarRysowania.getSelectedIndex()).points.get(index).setState(false);
+                    }
+                    
                     repaint();
                 }
             }
@@ -463,8 +489,21 @@ public class MainWindow extends javax.swing.JFrame {
                        modelTable.addRow(data[1]);
                        modelTable.addRow(data[2]);
                    }
+                   else{
+                       index=retunrPoint(me.getX(), me.getY());
+                       indexPoint=index;
+                       if(index>=0){
+                       data[0][1]=points.get(index).getLabel();
+                       data[1][1]= String.valueOf(points.get(index).getIndex());
+                       data[2][1]= String.valueOf(points.get(index).getState());
+                       modelTable.setRowCount(0);
+                       modelTable.addRow(data[0]);
+                       modelTable.addRow(data[1]);
+                       modelTable.addRow(data[2]);
+                   }
                     else{
                        modelTable.setRowCount(0);
+                   } 
                    }
                }        
            }
@@ -482,10 +521,12 @@ public class MainWindow extends javax.swing.JFrame {
                    }
                    ifDrawLine=true;
                }
+               beginingPoint=me.getPoint();
            }
            @Override
            public void mouseReleased(MouseEvent me) {
            int index=0;
+           int index2=0;
            if(!toolsDrawing.equals("TOUCH")){
                if(retunrLogicGate(me.getX(), me.getY())<0){
                    if(toolsDrawing.equals("NOT")){
@@ -564,8 +605,17 @@ public class MainWindow extends javax.swing.JFrame {
                    }
                    else{   
                        index=points.get(points.size()-1).getIndex()+1;
-                       points.add(new LogicPoint(true,"POINT", 1, me.getX(),me.getY()));
+                       points.add(new LogicPoint(true,"POINT", index, me.getX(),me.getY()));
                    }
+               }
+           }
+           if(toolsDrawing.equals("LINE")){
+               if(retunrPoint(beginingPoint.x, beginingPoint.y)>=0){
+                   if(retunrLogicGateInput(me.getX(),me.getY())>=0){
+                       System.out.println("Dodajemy");
+                       
+                   }
+                   System.out.println("istnieje");
                }
            }
            ifDrawLine=false;
@@ -654,7 +704,6 @@ public class MainWindow extends javax.swing.JFrame {
            public void mouseDragged(MouseEvent evt) {
                if(toolsDrawing.equals("LINE")){
                    if(ifDrawLine==true){
-                       System.out.println(evt.getX());
                        linePoint.get(linePoint.size()-1).setXY2(evt.getX(),evt.getY());
                    }
                }
@@ -673,6 +722,14 @@ public class MainWindow extends javax.swing.JFrame {
         public int retunrLogicGate(int x,int y){ 
                for(int i=0;i<logicGate.size();i++){
                       if(logicGate.get(i).contains(x, y)){
+                       return i;
+                   } 
+               }
+               return -1;
+        }
+        public int retunrLogicGateOutput(int x,int y){ 
+               for(int i=0;i<logicGate.size();i++){
+                      if(logicGate.get(i).containsOutput(x, y)){
                        return i;
                    } 
                }

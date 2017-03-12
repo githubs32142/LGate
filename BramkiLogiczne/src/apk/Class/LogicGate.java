@@ -302,5 +302,13 @@ public class LogicGate extends Rectangle2D.Double{
         if(label.equals("NXOR")){
            g2.drawRect((int)this.x, (int)this.y, (int)this.width+10, (int)this.height+10);  
         }
-    } 
+    }
+    public int returnInput(double x, double y){
+        for(int i=0;i<in.size();i++){
+            if(in.get(i).contains(x, y)){
+                return i;
+            }
+        }
+    return -1;
+    }
 }

@@ -23,11 +23,15 @@ public class LogicPoint extends Ellipse2D.Double{
      RenderingHints rh = new RenderingHints( RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
      rh.put(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY); 
      g2.setRenderingHints(rh);
-     // g2.setColor(new java.awt.Color(0, 127, 255));
      g2.setColor(Color.BLACK);
      g2.setStroke(new BasicStroke(2.2f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
      if(state){
          g2.drawLine((int)x,(int) (y+(width/2)),(int)(x+width),(int) (y+(width/2)));
+     }
+     else{
+          g2.drawLine((int)x,(int) (y+(width/2)),(int)(x+5),(int) (y+(width/2)));
+          g2.drawLine((int)x+10,(int) (y),(int)(x+15),(int) (y+(width/2)));
+          g2.drawLine((int)(x+15),(int) (y+(width/2)), (int)(x+width), (int)(y+(width/2)) );
      }
      g2.draw(this);
     }
