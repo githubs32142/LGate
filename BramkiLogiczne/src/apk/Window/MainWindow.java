@@ -461,6 +461,9 @@ public class MainWindow extends javax.swing.JFrame {
             new MainWindow().setVisible(true);
         });
     }
+    /**
+     * @author Andrzej Kierepka
+     */
  public class Rysunki extends JPanel implements MouseMotionListener,Serializable {
         List<LogicGate> logicGate= new ArrayList<>();
         List<LogicPoint> points= new ArrayList<>();
@@ -476,18 +479,17 @@ public class MainWindow extends javax.swing.JFrame {
                int index;
                if(toolsDrawing.equals("TOUCH")){
                    index=retunrLogicGate(me.getX(), me.getY());
-                   if(retunrLogicGateInput(me.getX(), me.getY())>=0){
-                       System.out.println("istnieje");
-                   }
                    indexGate=index;
                    if(index>=0){
                        data[0][1]=logicGate.get(index).getLabel();
                        data[1][1]= String.valueOf(logicGate.get(index).getIndex());
+                       data[2][0]="Ilość wejść";
                        data[2][1]= String.valueOf(logicGate.get(index).getInput());
                        modelTable.setRowCount(0);
                        modelTable.addRow(data[0]);
                        modelTable.addRow(data[1]);
                        modelTable.addRow(data[2]);
+                       indexPoint=-1;
                    }
                    else{
                        index=retunrPoint(me.getX(), me.getY());
@@ -495,6 +497,7 @@ public class MainWindow extends javax.swing.JFrame {
                        if(index>=0){
                        data[0][1]=points.get(index).getLabel();
                        data[1][1]= String.valueOf(points.get(index).getIndex());
+                       data[2][1]="Stan logiczny";
                        data[2][1]= String.valueOf(points.get(index).getState());
                        modelTable.setRowCount(0);
                        modelTable.addRow(data[0]);
@@ -521,12 +524,28 @@ public class MainWindow extends javax.swing.JFrame {
                    }
                    ifDrawLine=true;
                }
+               if(toolsDrawing.equals("TOUCH")){
+                   if(retunrLogicGate(me.getX(),me.getY())>=0){
+                       indexGate=retunrLogicGate(me.getX(),me.getY());
+                       moveX=me.getX()-logicGate.get(indexGate).x;
+                       moveY=me.getY()-logicGate.get(indexGate).y;
+                   }
+                    else{
+                        if(retunrPoint(me.getX(),me.getY())>=0){
+                            indexPoint=retunrPoint(me.getX(),me.getY());
+                            moveX=me.getX()-points.get(indexPoint).x;
+                            moveY=me.getY()-points.get(indexPoint).y;
+                        }    
+                   }
+                   
+               }
                beginingPoint=me.getPoint();
            }
            @Override
            public void mouseReleased(MouseEvent me) {
            int index=0;
            int index2=0;
+           boolean ifAdd=false;
            if(!toolsDrawing.equals("TOUCH")){
                if(retunrLogicGate(me.getX(), me.getY())<0){
                    if(toolsDrawing.equals("NOT")){
@@ -613,10 +632,21 @@ public class MainWindow extends javax.swing.JFrame {
                if(retunrPoint(beginingPoint.x, beginingPoint.y)>=0){
                    if(retunrLogicGateInput(me.getX(),me.getY())>=0){
                        System.out.println("Dodajemy");
-                       
+                       index=retunrLogicGateInput(me.getX(),me.getY());
+                       System.out.println(logicGate.get(index).returnInput(me.getX(),me.getY()));
+                       index2=logicGate.get(index).returnInput(me.getX(),me.getY());
+                       System.out.println(logicGate.get(index).containInPoint(index2));
+                       if(!logicGate.get(index).containInPoint(index2)){
+                           logicGate.get(index).addObject(index2, retunrPoint(beginingPoint.x, beginingPoint.y), toolsDrawing, "INPUT");
+                           System.out.println("dodalo");
+                       }
+                       ifAdd=true;
                    }
-                   System.out.println("istnieje");
+                    else{
+                       ifAdd=false;
+                   }
                }
+               
            }
            ifDrawLine=false;
                repaint();
@@ -691,8 +721,14 @@ public class MainWindow extends javax.swing.JFrame {
                 logicGate.get(i).drawBorder(g2D);
             }
          }// koniec rysowania bramek logicznych
-         for(LogicPoint lp:points){
-             lp.drawGate(g2D);
+         for(int i=0;i<points.size();i++){
+             if(indexPoint==i){
+             g2D.setColor(new java.awt.Color(0, 127, 255));
+             }
+             else{
+              g2D.setColor(Color.BLACK);   
+             }
+             points.get(i).drawGate(g2D);
          }// koniec rysowania pointów
          for(int i=0;i<linePoint.size();i++){
              linePoint.get(i).drawLine(g2D);
@@ -712,6 +748,13 @@ public class MainWindow extends javax.swing.JFrame {
                        logicGate.get(indexGate).setXY(evt.getX()-moveX, evt.getY()-moveY);
                        repaint();
                    }
+                   else{
+                    if(indexPoint>=0){
+                       points.get(indexPoint).setXY(evt.getX()-moveX, evt.getY()-moveY);
+                       repaint();
+                    }
+                   }
+                   
                }
                repaint();
             }

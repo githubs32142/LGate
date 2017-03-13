@@ -12,8 +12,11 @@ public class LogicGate extends Rectangle2D.Double{
     private int index;
     Rectangle2D.Double output2;
     List<Rectangle2D.Double> in = new ArrayList<>();
+    List<JoinGateObject> inObject = new ArrayList<>();
+    List<JoinObject> outObject = new ArrayList<>();
     Ellipse2D.Double output;
     private int input;
+    
     public LogicGate(){
         super();
     }
@@ -32,27 +35,27 @@ public class LogicGate extends Rectangle2D.Double{
         else{
          this.setInput(1);   
         }
-        setObramowanie();
+        setBorder();
     }
     public int getInput() {
         return input;
     }
     public void setInput(int input) {
         this.input = input;
-        setObramowanie();
+        setBorder();
     }
     public void setX(double x) {
         this.x = x;
-        setObramowanie();
+        setBorder();
     }
     public void setY(double y) {
         this.y = y;
-        setObramowanie();
+        setBorder();
     }
     public void setXY(double x,double y) {
         this.x = x;
         this.y = y;
-        setObramowanie();
+        setBorder();
     }
     public int getIndex() {
         return index;
@@ -116,7 +119,7 @@ public class LogicGate extends Rectangle2D.Double{
          g2.drawString(label,(int) this.x+20,(int) (this.y+(height/2)+8.0));
      }
     }
-    private void setObramowanie(){
+    private void setBorder(){
         if(label.equals("NOT")){
             if(getInput()==1){
                in.clear();
@@ -310,5 +313,18 @@ public class LogicGate extends Rectangle2D.Double{
             }
         }
     return -1;
+    }
+    public void addObject(int indexPoint,int index,String type,String typeOfJoin){
+        if(typeOfJoin.equals("INPUT")){// jeżeli wchodzi do bramki logicznej
+            inObject.add(new JoinGateObject(indexPoint, type, index));
+        }
+    }
+      public boolean containInPoint(int index){
+      for(int i=0;i<inObject.size();i++){
+          if(index==inObject.get(i).getIndex()){
+              return true;
+          }
+      }
+      return false;
     }
 }
