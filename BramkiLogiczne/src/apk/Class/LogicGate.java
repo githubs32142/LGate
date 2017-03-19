@@ -11,8 +11,8 @@ public class LogicGate extends Rectangle2D.Double{
     private String label;
     private int index;
     Rectangle2D.Double output2;
-    List<Rectangle2D.Double> in = new ArrayList<>();
-    List<JoinGateObject> inObject = new ArrayList<>();
+    public List<Rectangle2D.Double> in = new ArrayList<>();
+    public List<JoinGateObject> inObject = new ArrayList<>();
     List<JoinObject> outObject = new ArrayList<>();
     Ellipse2D.Double output;
     private int input;
@@ -314,9 +314,17 @@ public class LogicGate extends Rectangle2D.Double{
         }
     return -1;
     }
-    public void addObject(int indexPoint,int index,String type,String typeOfJoin){
+    /**
+     * 
+     * @param indexPoint miejsce w którym jest połączony punkt
+     * @param index indeks obiektu
+     * @param indexLine index lini
+     * @param type typ obiektu
+     * @param typeOfJoin typ połączenia 
+     */
+    public void addObject(int indexPoint,int index,int indexLine,String type,String typeOfJoin){
         if(typeOfJoin.equals("INPUT")){// jeżeli wchodzi do bramki logicznej
-            inObject.add(new JoinGateObject(indexPoint, type, index));
+            inObject.add(new JoinGateObject(indexPoint,indexLine, type, index));
         }
     }
       public boolean containInPoint(int index){

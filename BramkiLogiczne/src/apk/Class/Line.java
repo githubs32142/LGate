@@ -51,7 +51,7 @@ public class Line {
         this.y2 = y2;
         makeLines();
     }
-    private void makeLines(){
+    public void makeLines(){
             lines.clear();
             lines.add(new Line2D.Double(x1, y1, x2-(Math.abs(x1-x2)/2) , y1));
             lines.add(new Line2D.Double(x2-(Math.abs(x1-x2)/2), y1, x2-(Math.abs(x1-x2)/2), y2));

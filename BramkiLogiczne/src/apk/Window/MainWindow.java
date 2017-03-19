@@ -628,23 +628,44 @@ public class MainWindow extends javax.swing.JFrame {
                    }
                }
            }
-           if(toolsDrawing.equals("LINE")){
+           if(toolsDrawing.equals("LINE")){// jezeli rysujemy linie
                if(retunrPoint(beginingPoint.x, beginingPoint.y)>=0){
                    if(retunrLogicGateInput(me.getX(),me.getY())>=0){
-                       System.out.println("Dodajemy");
                        index=retunrLogicGateInput(me.getX(),me.getY());
-                       System.out.println(logicGate.get(index).returnInput(me.getX(),me.getY()));
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
-                       System.out.println(logicGate.get(index).containInPoint(index2));
                        if(!logicGate.get(index).containInPoint(index2)){
-                           logicGate.get(index).addObject(index2, retunrPoint(beginingPoint.x, beginingPoint.y), toolsDrawing, "INPUT");
-                           System.out.println("dodalo");
+                           logicGate.get(index).addObject(index2,linePoint.get(linePoint.size()-1).getIndex(), retunrPoint(beginingPoint.x, beginingPoint.y), "POINT", "INPUT");
+                           ifAdd=true;
                        }
-                       ifAdd=true;
+                        else{
+                        ifAdd=false;   
+                       }
                    }
+               }
+              else{
+                   if(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)>=0){
+                       if(retunrLogicGateInput(me.getX(),me.getY())>=0){
+                          index=retunrLogicGateInput(me.getX(),me.getY());
+                       index2=logicGate.get(index).returnInput(me.getX(),me.getY());
+                       if(!logicGate.get(index).containInPoint(index2)){
+                           //logicGate.get(index).addObject(index2, retunrPoint(beginingPoint.x, beginingPoint.y), "GATE", "INPUT");
+                           System.out.println("dodalo");
+                           ifAdd=true;
+                       }
+                        else{
+                        ifAdd=false;   
+                       }                    
+                       }
+                        else{
+                        ifAdd=false;   
+                       }
+                       }
                     else{
-                       ifAdd=false;
-                   }
+                        ifAdd=false;
+                    }
+               }
+               if(!ifAdd){
+                   linePoint.remove(linePoint.size()-1);
                }
                
            }
@@ -746,6 +767,11 @@ public class MainWindow extends javax.swing.JFrame {
                if(toolsDrawing.equals("TOUCH")){
                    if(indexGate>=0){
                        logicGate.get(indexGate).setXY(evt.getX()-moveX, evt.getY()-moveY);
+                       for(int i=0;i<logicGate.get(indexGate).inObject.size();i++){
+                           linePoint.get(logicGate.get(indexGate).inObject.get(i).getIndexLine()).x2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndex()).x;
+                           linePoint.get(logicGate.get(indexGate).inObject.get(i).getIndexLine()).y2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndex()).y;
+                           linePoint.get(logicGate.get(indexGate).inObject.get(i).getIndexLine()).makeLines();
+                       }
                        repaint();
                    }
                    else{

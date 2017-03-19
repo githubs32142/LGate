@@ -4,11 +4,11 @@ package apk.Class;
  * @author Andrzej Kierepka
  */
 public class JoinObject {
-    private String typrOfObject;
-    private int indexObject;
+    private String typeOfObject;// typ obiektu który jest przyłączony np bramka czy też punkt
+    private int indexObject; // indeks obiektu
 
     public JoinObject(String typrOfObject, int indexObject) {
-        this.typrOfObject = typrOfObject;
+        this.typeOfObject = typrOfObject;
         this.indexObject = indexObject;
     }
 
@@ -17,7 +17,7 @@ public class JoinObject {
     }
 
     public String getTyprOfObject() {
-        return typrOfObject;
+        return typeOfObject;
     }
 
     public void setIndexObject(int indexObject) {
@@ -25,7 +25,7 @@ public class JoinObject {
     }
 
     public void setTyprOfObject(String typrOfObject) {
-        this.typrOfObject = typrOfObject;
+        this.typeOfObject = typrOfObject;
     }
 
     
