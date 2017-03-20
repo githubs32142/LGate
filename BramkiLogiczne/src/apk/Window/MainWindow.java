@@ -634,7 +634,7 @@ public class MainWindow extends javax.swing.JFrame {
                        index=retunrLogicGateInput(me.getX(),me.getY());
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
                        if(!logicGate.get(index).containInPoint(index2)){
-                           logicGate.get(index).addObject(index2,linePoint.get(linePoint.size()-1).getIndex(), retunrPoint(beginingPoint.x, beginingPoint.y), "POINT", "INPUT");
+                           logicGate.get(index).addObject(retunrPoint(beginingPoint.x, beginingPoint.y),index2,linePoint.get(linePoint.size()-1).getIndex(), "POINT", "INPUT");
                            ifAdd=true;
                        }
                         else{
@@ -648,8 +648,10 @@ public class MainWindow extends javax.swing.JFrame {
                           index=retunrLogicGateInput(me.getX(),me.getY());
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
                        if(!logicGate.get(index).containInPoint(index2)){
-                           //logicGate.get(index).addObject(index2, retunrPoint(beginingPoint.x, beginingPoint.y), "GATE", "INPUT");
-                           System.out.println("dodalo");
+                          
+                           logicGate.get(index).addObject(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y),index2,linePoint.get(linePoint.size()-1).getIndex(), "GATE", "INPUT");
+                           logicGate.get(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)).addObject(index,-1,linePoint.get(linePoint.size()-1).getIndex() ,"GATE", "OUTPUT");
+                           // System.out.println("dodalo");
                            ifAdd=true;
                        }
                         else{
@@ -768,9 +770,19 @@ public class MainWindow extends javax.swing.JFrame {
                    if(indexGate>=0){
                        logicGate.get(indexGate).setXY(evt.getX()-moveX, evt.getY()-moveY);
                        for(int i=0;i<logicGate.get(indexGate).inObject.size();i++){
-                           linePoint.get(logicGate.get(indexGate).inObject.get(i).getIndexLine()).x2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndex()).x;
-                           linePoint.get(logicGate.get(indexGate).inObject.get(i).getIndexLine()).y2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndex()).y;
-                           linePoint.get(logicGate.get(indexGate).inObject.get(i).getIndexLine()).makeLines();
+                           int indexLine=returnPositonLines(logicGate.get(indexGate).inObject.get(i).getIndexLine());
+                           System.out.println("Bramka"+indexLine);
+                           if(indexLine>=0) {
+                           linePoint.get(indexLine).x2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).x;
+                           linePoint.get(indexLine).y2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).y;
+                           linePoint.get(indexLine).makeLines();  
+                           }
+                       }
+                       for(int i=0;i<logicGate.get(indexGate).outObject.size();i++){
+                            int indexLine=returnPositonLines(logicGate.get(indexGate).outObject.get(i).getIndexLine());
+                           linePoint.get(indexLine).x1=logicGate.get(indexGate).outputPositionX();
+                           linePoint.get(indexLine).y1=logicGate.get(indexGate).outputPositionY();
+                           linePoint.get(indexLine).makeLines();
                        }
                        repaint();
                    }
@@ -819,6 +831,19 @@ public class MainWindow extends javax.swing.JFrame {
                    } 
                }
                return -1;
+        }
+        /**
+         ** Metoda zwraca nam pozycję na liście linii o podanym indeksie 
+         * @param index
+         * @return 
+         */
+        public int returnPositonLines(int index){
+            for(int i=0;i<linePoint.size();i++){
+                if(index==linePoint.get(i).getIndex()){
+                    return i;
+                }
+            }
+            return -1;
         }
     }	
     
@@ -947,8 +972,7 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
             
         }
                         
-    }
-		private boolean CzyObszarZamkniecia(int x, int y) {
+    }		private boolean CzyObszarZamkniecia(int x, int y) {
 			return  Math.abs(x-pozycjaKursoraX)<szerokosc && Math.abs(y-pozycjaKursoraY)<wysokosc;
 		}        
 		private int CzyObszarRysowania(int x, int y) {

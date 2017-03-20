@@ -13,7 +13,7 @@ public class LogicGate extends Rectangle2D.Double{
     Rectangle2D.Double output2;
     public List<Rectangle2D.Double> in = new ArrayList<>();
     public List<JoinGateObject> inObject = new ArrayList<>();
-    List<JoinObject> outObject = new ArrayList<>();
+    public List<JoinGateObject> outObject = new ArrayList<>();
     Ellipse2D.Double output;
     private int input;
     
@@ -62,7 +62,10 @@ public class LogicGate extends Rectangle2D.Double{
     }
     public String getLabel() {
         return label;
-    }   
+    }
+    /**
+     * @param g2 parametr potrzebny do rysowania
+     */
     public void drawGate(Graphics2D g2){
      RenderingHints rh = new RenderingHints( RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
      rh.put(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY); 
@@ -119,6 +122,9 @@ public class LogicGate extends Rectangle2D.Double{
          g2.drawString(label,(int) this.x+20,(int) (this.y+(height/2)+8.0));
      }
     }
+    /**
+     ** Metoda ustawia wejścia i wyjścia dla bramek
+     */
     private void setBorder(){
         if(label.equals("NOT")){
             if(getInput()==1){
@@ -269,6 +275,12 @@ public class LogicGate extends Rectangle2D.Double{
         }
     return false;
     }
+    /**
+     ** Metoda sprawdza czy podany punkt znajduje się w bramce logicznej 
+     * @param d współrzędna x.
+     * @param d1 współrzędna y.
+     * @return zwraca prawdę, jęzeli zawiera się.
+     */
     public boolean containsOutput(double d, double d1) {
         if(label.equals("NOT") || label.equals("NAND") || label.equals("NXOR") || label.equals("NOR")){
             if(output.contains(d, d1)){
@@ -316,23 +328,53 @@ public class LogicGate extends Rectangle2D.Double{
     }
     /**
      * 
-     * @param indexPoint miejsce w którym jest połączony punkt
-     * @param index indeks obiektu
+     **  Metoda dodaje obiekt do bramki 
+     * @param indexOfObject
+     * @param indexOfPosition
      * @param indexLine index lini
-     * @param type typ obiektu
+     * @param typeOfObject
      * @param typeOfJoin typ połączenia 
      */
-    public void addObject(int indexPoint,int index,int indexLine,String type,String typeOfJoin){
+    public void addObject(int indexOfObject, int indexOfPosition,int indexLine,String typeOfObject,String typeOfJoin){
         if(typeOfJoin.equals("INPUT")){// jeżeli wchodzi do bramki logicznej
-            inObject.add(new JoinGateObject(indexPoint,indexLine, type, index));
+            inObject.add(new JoinGateObject(indexOfPosition,indexLine, typeOfObject, indexOfObject));
+        }
+        if(typeOfJoin.equals("OUTPUT")){// jeżeli wychodzi od bramki logicznej
+            outObject.add(new JoinGateObject(indexOfPosition,indexLine, typeOfObject, indexOfObject));
         }
     }
       public boolean containInPoint(int index){
       for(int i=0;i<inObject.size();i++){
-          if(index==inObject.get(i).getIndex()){
+          if(index==inObject.get(i).getIndexObject()){
               return true;
           }
       }
       return false;
+    }
+      /**
+       ** Metoda zwraca pozycję X która jest na wyjściu bramki logicznej 
+       * @return współrzedna końca(X)
+       */
+      public double outputPositionX() {
+        if(label.equals("NOT") || label.equals("NAND") || label.equals("NXOR") || label.equals("NOR")){
+            return output.x+output.width;
+        }
+        if( label.equals("AND") || label.equals("XOR") || label.equals("OR")){
+            return output.x+output.width;
+        }
+        return 0.0;
+    }
+        /**
+       ** Metoda zwraca pozycję Y która jest na wyjściu bramki logicznej 
+       * @return współrzedna końca(Y)
+       */
+      public double outputPositionY() {
+        if(label.equals("NOT") || label.equals("NAND") || label.equals("NXOR") || label.equals("NOR")){
+            return output.y+(output.height/2);
+        }
+        if( label.equals("AND") || label.equals("XOR") || label.equals("OR")){
+             return output.y+(output.height/2);
+        }
+        return 0.0;
     }
 }

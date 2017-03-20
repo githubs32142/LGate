@@ -9,21 +9,21 @@ package apk.Class;
  * @author Andrzej Kierepka
  */
 public class JoinGateObject extends JoinObject{
-    private int index;// indeks oznacza miejsce przyłączenia do bramki logicznej jak jest 
+    private int indexOfPosition;// indeks oznacza miejsce przyłączenia do bramki logicznej jak jest 
     private int indexLine;
-    public JoinGateObject(int index,int indexLine, String typeOfObject, int indexObject) {
+    public JoinGateObject(int indexOfPosition,int indexLine, String typeOfObject, int indexObject) {
         super(typeOfObject, indexObject);
-        this.index = index;
+        this.indexOfPosition = indexOfPosition;
         this.indexLine=indexLine;
         
     }
 
-    public int getIndex() {
-        return index;
+    public int getIndexOfPosition() {
+        return indexOfPosition;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setIndexOfPosition(int index) {
+        this.indexOfPosition = index;
     }
 
     public void setIndexLine(int indexLine) {
