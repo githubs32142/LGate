@@ -6,12 +6,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LogicPoint extends Ellipse2D.Double{
     private boolean state;
     private String label;
     private int index;
-
+    public List<JoinGateObject> inObject = new ArrayList<>();
+    public List<JoinGateObject> outObject = new ArrayList<>();
     public LogicPoint(boolean state, String label, int index, double arg0, double arg1) {
         super(arg0, arg1, 25, 25);
         this.state = state;
@@ -61,5 +64,22 @@ public class LogicPoint extends Ellipse2D.Double{
     
     public void setState(boolean state) {
         this.state=state;
+    }
+        /**
+     * 
+     **  Metoda dodaje obiekt do bramki 
+     * @param indexOfObject index Obiektu z którym będziemy się łączyć
+     * @param indexOfPosition indeks pozycji na wejściu(dotyczy jedynie wejść bramek logicznych)
+     * @param indexLine index lini która łączy dwa obiekrty
+     * @param typeOfObject typ obiektu z którym będziemy połączeni
+     * @param typeOfJoin typ połączenia INPUT- wchodzi OUTPUT- wychodzi
+     */
+    public void addObject(int indexOfObject, int indexOfPosition,int indexLine,String typeOfObject,String typeOfJoin){
+        if(typeOfJoin.equals("INPUT")){// jeżeli wchodzi do bramki logicznej
+            inObject.add(new JoinGateObject(indexOfPosition,indexLine, typeOfObject, indexOfObject));
+        }
+        if(typeOfJoin.equals("OUTPUT")){// jeżeli wychodzi od bramki logicznej
+            outObject.add(new JoinGateObject(indexOfPosition,indexLine, typeOfObject, indexOfObject));
+        }
     }
 }

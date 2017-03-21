@@ -345,7 +345,7 @@ public class LogicGate extends Rectangle2D.Double{
     }
       public boolean containInPoint(int index){
       for(int i=0;i<inObject.size();i++){
-          if(index==inObject.get(i).getIndexObject()){
+          if(index==inObject.get(i).getIndexOfPosition()){
               return true;
           }
       }

@@ -4,6 +4,8 @@ import apk.Class.Line;
 import apk.Class.LogicGate;
 import apk.Class.LogicPoint;
 import apk.Window.MainWindow.Rysunki;
+import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
+import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -55,8 +57,9 @@ public class MainWindow extends javax.swing.JFrame {
     String[] items1 = { "2","3","4" };
     String[] items2 = { "1" };
     String[] items3 = { "true","false" };
+    String[] items4 = { "2" };
     String[] columnNames = {"Nazwa","Właściwości"};
-    JComboBox comboBox1,comboBox2,comboBox3;
+    JComboBox comboBox1,comboBox2,comboBox3,comboBox4;
     JTable tabela;
     JScrollPane jScrollPane1;
     public MainWindow() {
@@ -76,6 +79,9 @@ public class MainWindow extends javax.swing.JFrame {
         comboBox3 = new JComboBox( items3 );
         DefaultCellEditor dce3 = new DefaultCellEditor( comboBox3 );
         editors.add(dce3);
+        comboBox4 = new JComboBox( items4 );
+        DefaultCellEditor dce4 = new DefaultCellEditor( comboBox4 );
+        editors.add(dce4);
         //modelTable=(DefaultTableModel) tabela.getModel();
          modelTable = new DefaultTableModel(data, columnNames);
          tabela = new JTable(modelTable){
@@ -89,10 +95,10 @@ public class MainWindow extends javax.swing.JFrame {
                     }
                    }
                  else{
-                       if (modelColumn == 1 && row==2 ){
+                          if (modelColumn == 1 && row==2 ){
                            return editors.get(0);
+                       } 
                        }
-                   }
                 }
                       if(workSpace.get(obszarRysowania.getSelectedIndex()).indexPoint>=0){
                         if (modelColumn == 1 && row==2 ){
@@ -112,8 +118,11 @@ public class MainWindow extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate;
+                
                 if(index>=0){
-                    workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
+                    if(!(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("XOR") || workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("NXOR"))){
+                     workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
+                    } 
                     repaint();
                 }
             }
@@ -167,6 +176,7 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Symulator bramek logicznych");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 1, new java.awt.Color(0, 0, 0)));
 
@@ -178,7 +188,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 438, Short.MAX_VALUE)
+            .addGap(0, 538, Short.MAX_VALUE)
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(0, 0, 0)));
@@ -272,6 +282,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         buttonGroup1.add(jToggleButton7);
         jToggleButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/nxor18.png"))); // NOI18N
+        jToggleButton7.setToolTipText("Rysuj bramke logiczną NXOR");
         jToggleButton7.setFocusable(false);
         jToggleButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -284,6 +295,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         buttonGroup1.add(jToggleButton8);
         jToggleButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/Gate18/nand18.png"))); // NOI18N
+        jToggleButton8.setToolTipText("Rysuj bramkę logiczną NAND");
         jToggleButton8.setFocusable(false);
         jToggleButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -351,7 +363,7 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 344, Short.MAX_VALUE))
+                .addGap(0, 486, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -380,8 +392,7 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -449,10 +460,10 @@ public class MainWindow extends javax.swing.JFrame {
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(new WindowsLookAndFeel() ); 
+              //  if ("Windows".equals(info.getName())) {
+                    UIManager.setLookAndFeel(new AcrylLookAndFeel() ); 
                     break;
-                }
+               // }
             }
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -495,9 +506,10 @@ public class MainWindow extends javax.swing.JFrame {
                        index=retunrPoint(me.getX(), me.getY());
                        indexPoint=index;
                        if(index>=0){
+                       indexGate=-1;
                        data[0][1]=points.get(index).getLabel();
                        data[1][1]= String.valueOf(points.get(index).getIndex());
-                       data[2][1]="Stan logiczny";
+                       data[2][0]="Stan logiczny";
                        data[2][1]= String.valueOf(points.get(index).getState());
                        modelTable.setRowCount(0);
                        modelTable.addRow(data[0]);
@@ -527,12 +539,14 @@ public class MainWindow extends javax.swing.JFrame {
                if(toolsDrawing.equals("TOUCH")){
                    if(retunrLogicGate(me.getX(),me.getY())>=0){
                        indexGate=retunrLogicGate(me.getX(),me.getY());
+                       indexPoint=-1;
                        moveX=me.getX()-logicGate.get(indexGate).x;
                        moveY=me.getY()-logicGate.get(indexGate).y;
                    }
                     else{
                         if(retunrPoint(me.getX(),me.getY())>=0){
                             indexPoint=retunrPoint(me.getX(),me.getY());
+                            indexGate=-1;
                             moveX=me.getX()-points.get(indexPoint).x;
                             moveY=me.getY()-points.get(indexPoint).y;
                         }    
@@ -635,6 +649,7 @@ public class MainWindow extends javax.swing.JFrame {
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
                        if(!logicGate.get(index).containInPoint(index2)){
                            logicGate.get(index).addObject(retunrPoint(beginingPoint.x, beginingPoint.y),index2,linePoint.get(linePoint.size()-1).getIndex(), "POINT", "INPUT");
+                           points.get(retunrPoint(beginingPoint.x, beginingPoint.y)).addObject(index, -1, linePoint.get(linePoint.size()-1).getIndex(),"GATE", "OUTPUT");
                            ifAdd=true;
                        }
                         else{
@@ -648,10 +663,8 @@ public class MainWindow extends javax.swing.JFrame {
                           index=retunrLogicGateInput(me.getX(),me.getY());
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
                        if(!logicGate.get(index).containInPoint(index2)){
-                          
                            logicGate.get(index).addObject(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y),index2,linePoint.get(linePoint.size()-1).getIndex(), "GATE", "INPUT");
                            logicGate.get(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)).addObject(index,-1,linePoint.get(linePoint.size()-1).getIndex() ,"GATE", "OUTPUT");
-                           // System.out.println("dodalo");
                            ifAdd=true;
                        }
                         else{
@@ -773,22 +786,31 @@ public class MainWindow extends javax.swing.JFrame {
                            int indexLine=returnPositonLines(logicGate.get(indexGate).inObject.get(i).getIndexLine());
                            System.out.println("Bramka"+indexLine);
                            if(indexLine>=0) {
-                           linePoint.get(indexLine).x2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).x;
-                           linePoint.get(indexLine).y2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).y;
-                           linePoint.get(indexLine).makeLines();  
+                          // linePoint.get(indexLine).x2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).x;
+                          // linePoint.get(indexLine).y2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).y;
+                           //linePoint.get(indexLine).makeLines();  
+                           linePoint.get(indexLine).setXY2(logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).x, logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).y);
                            }
                        }
                        for(int i=0;i<logicGate.get(indexGate).outObject.size();i++){
                             int indexLine=returnPositonLines(logicGate.get(indexGate).outObject.get(i).getIndexLine());
-                           linePoint.get(indexLine).x1=logicGate.get(indexGate).outputPositionX();
-                           linePoint.get(indexLine).y1=logicGate.get(indexGate).outputPositionY();
-                           linePoint.get(indexLine).makeLines();
+                          // linePoint.get(indexLine).x1=logicGate.get(indexGate).outputPositionX();
+                          // linePoint.get(indexLine).y1=logicGate.get(indexGate).outputPositionY();
+                         //  linePoint.get(indexLine).makeLines();
+                           linePoint.get(indexLine).setXY1(logicGate.get(indexGate).outputPositionX(), logicGate.get(indexGate).outputPositionY());
                        }
                        repaint();
                    }
                    else{
                     if(indexPoint>=0){
                        points.get(indexPoint).setXY(evt.getX()-moveX, evt.getY()-moveY);
+                        for(int i=0;i<points.get(indexPoint).outObject.size();i++){
+                            int indexLine=returnPositonLines(points.get(indexPoint).outObject.get(i).getIndexLine());
+                          // linePoint.get(indexLine).x1=logicGate.get(indexGate).outputPositionX();
+                          // linePoint.get(indexLine).y1=logicGate.get(indexGate).outputPositionY();
+                         //  linePoint.get(indexLine).makeLines();
+                           linePoint.get(indexLine).setXY1(points.get(indexPoint).x+points.get(indexPoint).width,points.get(indexPoint).y+(points.get(indexPoint).height/2));
+                       }
                        repaint();
                     }
                    }
