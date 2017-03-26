@@ -85,6 +85,7 @@ public class MainWindow extends javax.swing.JFrame {
         //modelTable=(DefaultTableModel) tabela.getModel();
          modelTable = new DefaultTableModel(data, columnNames);
          tabela = new JTable(modelTable){
+            @Override
             public TableCellEditor getCellEditor(int row, int column)
             {
                 int modelColumn = convertColumnIndexToModel( column );
@@ -355,6 +356,11 @@ public class MainWindow extends javax.swing.JFrame {
         jToolBar2.add(jToggleButton5);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/delete.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jButton4);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -397,6 +403,92 @@ public class MainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    /**
+     ** Metoda która usuwa powiązania lini wraz z linią 
+     * @param indexLine indeks Lini której powiązanie chcemy usunąć
+     */
+    private void removeLink(int indexLine ){
+    for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).points.size();i++){
+        for(int j=0;j<workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).inObject.size();j++){
+            if(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).inObject.get(j).getIndexLine()==indexLine){
+                workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).inObject.remove(j);
+            }
+        }
+        for(int j=0;j<workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.size();j++){
+            if(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.get(j).getIndexLine()==indexLine){
+                workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.remove(j);
+            }
+        }
+    }
+    
+    for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.size();i++){
+        for(int j=0;j<workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).inObject.size();j++){
+            if(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).inObject.get(j).getIndexLine()==indexLine){
+                workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).inObject.remove(j);
+            }
+        }
+        for(int j=0;j<workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).outObject.size();j++){
+            if(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).outObject.get(j).getIndexLine()==indexLine){
+                workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).outObject.remove(j);
+            }
+        }
+    }
+    removeLine(indexLine);
+    }
+    /**
+     ** Metoda która usuwa linie której został podany indeks(identyfikator) 
+     * @param indexLine indeks Lini(identyfikator)
+     */
+    private void removeLine(int indexLine){
+        for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).linePoint.size();i++){
+            if(workSpace.get(obszarRysowania.getSelectedIndex()).linePoint.get(i).getIndex()==indexLine){
+                workSpace.get(obszarRysowania.getSelectedIndex()).linePoint.remove(i);
+                return;
+            }
+        }
+    }
+    /**
+     ** Metoda która odpowiedzialna jes za usuniecie punktu (stannu logicznego) 
+     * @param indexPoint indeks(identyfikator nie pozycja na liście) punktu 
+     */
+    private void removePoint(int indexPoint){
+        for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).points.size();i++){
+            if(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).getIndex()==indexPoint){
+                workSpace.get(obszarRysowania.getSelectedIndex()).points.remove(i);
+                return;
+            }
+        }
+    }
+    /**
+     ** Metoda która usuwa bramke logiczną o podanym identyfikatorze. 
+     * @param indexGate indeks bramki logicznej
+     */
+    private void removeGate(int indexGate){
+        for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.size();i++){
+            if(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).getIndex()==indexGate){
+                workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.remove(i);
+                return;
+            }
+        }
+    }
+    public void removeObject(String type, int id){
+        if(type.equals("POINT")){
+            for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).points.size();i++){
+                if(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).getIndex()==id){
+                    while(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).inObject.size()>0) {
+                        removeLink(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).inObject.get(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).inObject.size()-1).getIndexLine());
+                    }
+                    while(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.size()>0) {
+                        removeLink(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.get(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.size()-1).getIndexLine());
+                    }
+                    removePoint(id);
+                }
+            }
+        }
+    }
+    /**
+     ** Metoda ta dodaje obszar rysowania do programu 
+     */
     private  void addWorkSpace(){
         workSpace.add(new Rysunki());
         workSpace.get(workSpace.size()-1).setPreferredSize(new Dimension(2000, 3000));
@@ -456,6 +548,20 @@ public class MainWindow extends javax.swing.JFrame {
         siatka=!siatka;
         repaint();
     }//GEN-LAST:event_jToggleButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        int id=0;
+        if(data[0][1].equals("POINT")){
+            try{
+                id=Integer.parseInt(data[1][1]);
+            }
+            catch(Exception ex){
+                //bład
+            }
+            removeObject("POINT", id);
+        }
+        repaint();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         try {
