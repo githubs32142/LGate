@@ -1070,6 +1070,8 @@ int id=0;
                 if(logicGate.get(i).getLabel().equals("NXOR")  ){
                 return counterInput%2==0;
                 }
+                
+                
                 //}
                 
             //}
