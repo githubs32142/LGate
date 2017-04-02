@@ -403,7 +403,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    /**
+/**
      ** Metoda która usuwa powiązania lini wraz z linią 
      * @param indexLine indeks Lini której powiązanie chcemy usunąć
      */
@@ -471,6 +471,11 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
     }
+    /**
+     ** Metoda która jest odpowiedzialna za usuwanie obiektów wraz z połączeniami 
+     * @param type- typ obiektu który ma być usunięty
+     * @param id identyfikator obiektu który będzie usuwany
+     */
     public void removeObject(String type, int id){
         if(type.equals("POINT")){
             for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).points.size();i++){
@@ -482,6 +487,19 @@ public class MainWindow extends javax.swing.JFrame {
                         removeLink(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.get(workSpace.get(obszarRysowania.getSelectedIndex()).points.get(i).outObject.size()-1).getIndexLine());
                     }
                     removePoint(id);
+                }
+            }
+        }
+        if(type.equals("GATE")){
+            for(int i=0;i<workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.size();i++){
+                if(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).getIndex()==id){
+                    while(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).inObject.size()>0) {
+                        removeLink(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).inObject.get(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).inObject.size()-1).getIndexLine());
+                    }
+                    while(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).outObject.size()>0) {
+                        removeLink(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).outObject.get(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(i).outObject.size()-1).getIndexLine());
+                    }
+                    removeGate(id);
                 }
             }
         }
@@ -550,7 +568,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int id=0;
+int id=0;
         if(data[0][1].equals("POINT")){
             try{
                 id=Integer.parseInt(data[1][1]);
@@ -560,7 +578,18 @@ public class MainWindow extends javax.swing.JFrame {
             }
             removeObject("POINT", id);
         }
+        if(data[0][1].equals("OR") || data[0][1].equals("NOR") || data[0][1].equals("AND") || data[0][1].equals("NAND") || data[0][1].equals("NOT") || data[0][1].equals("XOR") || data[0][1].equals("NXOR")   ){
+            try{
+                id=Integer.parseInt(data[1][1]);
+            }
+            catch(Exception ex){
+                //bład
+            }
+            removeObject("GATE", id);
+        }
         repaint();
+        workSpace.get(obszarRysowania.getSelectedIndex()).indexGate=-1;
+        workSpace.get(obszarRysowania.getSelectedIndex()).indexPoint=-1;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
@@ -598,6 +627,7 @@ public class MainWindow extends javax.swing.JFrame {
                    index=retunrLogicGate(me.getX(), me.getY());
                    indexGate=index;
                    if(index>=0){
+                       System.out.println(returnStateOutput(index));
                        data[0][1]=logicGate.get(index).getLabel();
                        data[1][1]= String.valueOf(logicGate.get(index).getIndex());
                        data[2][0]="Ilość wejść";
@@ -754,8 +784,8 @@ public class MainWindow extends javax.swing.JFrame {
                        index=retunrLogicGateInput(me.getX(),me.getY());
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
                        if(!logicGate.get(index).containInPoint(index2)){
-                           logicGate.get(index).addObject(retunrPoint(beginingPoint.x, beginingPoint.y),index2,linePoint.get(linePoint.size()-1).getIndex(), "POINT", "INPUT");
-                           points.get(retunrPoint(beginingPoint.x, beginingPoint.y)).addObject(index, -1, linePoint.get(linePoint.size()-1).getIndex(),"GATE", "OUTPUT");
+                           logicGate.get(index).addObject(points.get(retunrPoint(beginingPoint.x, beginingPoint.y)).getIndex(),index2,linePoint.get(linePoint.size()-1).getIndex(), "POINT", "INPUT");
+                           points.get(retunrPoint(beginingPoint.x, beginingPoint.y)).addObject(logicGate.get(index).getIndex(), -1, linePoint.get(linePoint.size()-1).getIndex(),"GATE", "OUTPUT");
                            ifAdd=true;
                        }
                         else{
@@ -769,8 +799,9 @@ public class MainWindow extends javax.swing.JFrame {
                           index=retunrLogicGateInput(me.getX(),me.getY());
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
                        if(!logicGate.get(index).containInPoint(index2)){
-                           logicGate.get(index).addObject(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y),index2,linePoint.get(linePoint.size()-1).getIndex(), "GATE", "INPUT");
-                           logicGate.get(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)).addObject(index,-1,linePoint.get(linePoint.size()-1).getIndex() ,"GATE", "OUTPUT");
+                           //zle
+                           logicGate.get(index).addObject(logicGate.get(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)).getIndex(),index2,linePoint.get(linePoint.size()-1).getIndex(), "GATE", "INPUT");
+                           logicGate.get(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)).addObject(logicGate.get(index).getIndex(),-1,linePoint.get(linePoint.size()-1).getIndex() ,"GATE", "OUTPUT");
                            ifAdd=true;
                        }
                         else{
@@ -870,7 +901,7 @@ public class MainWindow extends javax.swing.JFrame {
              else{
               g2D.setColor(Color.BLACK);   
              }
-             points.get(i).drawGate(g2D);
+             points.get(i).drawPoint(g2D);
          }// koniec rysowania pointów
          for(int i=0;i<linePoint.size();i++){
              linePoint.get(i).drawLine(g2D);
@@ -928,6 +959,12 @@ public class MainWindow extends javax.swing.JFrame {
         public void mouseMoved(MouseEvent me) {
             
         }
+        /**
+         ** Metoda która sprawdza, czy na podanych współrzędnych znajduje się bramka logiczna 
+         * @param x współrzędna x
+         * @param y współrzędna y
+         * @return indeks obiektu znajdujący się na liście
+         */
         public int retunrLogicGate(int x,int y){ 
                for(int i=0;i<logicGate.size();i++){
                       if(logicGate.get(i).contains(x, y)){
@@ -936,6 +973,12 @@ public class MainWindow extends javax.swing.JFrame {
                }
                return -1;
         }
+        /**
+         ** Metoda zwraca która sprawdza, czy podane wspołrzędne znajdują się na wyjściu bramki lodicznej 
+         * @param x współrzędna x
+         * @param y współrzędna y
+         * @return  indeks obiektu znajdujący się na liście
+         */
         public int retunrLogicGateOutput(int x,int y){ 
                for(int i=0;i<logicGate.size();i++){
                       if(logicGate.get(i).containsOutput(x, y)){
@@ -944,6 +987,12 @@ public class MainWindow extends javax.swing.JFrame {
                }
                return -1;
         }
+        /**
+         * Metoda która zwraca, czy na podanycj współrzędnych znajduje się wejście do bramki logicznej 
+         * @param x współrzędna x
+         * @param y współrzędna y
+         * @return indeks obiektu
+         */
         public int retunrLogicGateInput(int x,int y){ 
                for(int i=0;i<logicGate.size();i++){
                       if(logicGate.get(i).containsInput(x, y)){
@@ -952,6 +1001,12 @@ public class MainWindow extends javax.swing.JFrame {
                }
                return -1;
         }
+        /**
+         ** Metoda która sprawdza, czy na podanych wspołrzędnych znajduje się Punkt(Wejście) 
+         * @param x współrzędna x
+         * @param y współrzędna y
+         * @return  indeks do obiektu
+         */
         public int retunrPoint(int x,int y){ 
                for(int i=0;i<points.size();i++){
                       if(points.get(i).contains(x, y)){
@@ -972,6 +1027,53 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
             return -1;
+        }
+        public boolean returnStateOutput(int i){
+            int counter=0,counterInput=0;
+           // for(int i=0;i<=logicGate.size();i++){
+                //if(logicGate.get(i).getIndex()==idGate){
+                    for(int j=0;j<logicGate.get(i).inObject.size();j++){
+                        if(logicGate.get(i).inObject.get(j).getTypeOfObject().equals("POINT")){
+                            for(int k=0;k<points.size();k++){
+                                if(points.get(k).getIndex()==logicGate.get(i).inObject.get(j).getIndexObject()){
+                                    if(points.get(k).getState()==true){
+                                        counterInput++;
+                                    }
+                                    counter++;
+                                }
+                            }
+                        }
+                        //
+                        if(logicGate.get(i).inObject.get(j).getTypeOfObject().equals("GATE")){
+                            for(int k=0;k<logicGate.size();k++){
+                                if(logicGate.get(k).getIndex()==logicGate.get(i).inObject.get(j).getIndexObject()){
+                                    if(logicGate.get(k).getState()==true){
+                                        counterInput++;
+                                    }
+                                    counter++;
+                                }
+                            }
+                        }
+                    }
+                if(logicGate.get(i).getLabel().equals("OR") || logicGate.get(i).getLabel().equals("NAND") ){
+                return counterInput>=1;
+                }
+                if(logicGate.get(i).getLabel().equals("AND") || logicGate.get(i).getLabel().equals("NOR") ){
+                return counterInput==counter;
+                }
+                if(logicGate.get(i).getLabel().equals("NOT")  ){
+                return counterInput != 1;
+                }
+                if(logicGate.get(i).getLabel().equals("XOR")  ){
+                return counterInput%2!=0;
+                }
+                if(logicGate.get(i).getLabel().equals("NXOR")  ){
+                return counterInput%2==0;
+                }
+                //}
+                
+            //}
+            return false;
         }
     }	
     

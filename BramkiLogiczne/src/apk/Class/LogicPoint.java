@@ -8,21 +8,37 @@ import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * @author Andrzej Kierepka
+ * @version 1.7
+ * 
+ */
 public class LogicPoint extends Ellipse2D.Double{
     private boolean state;
     private String label;
     private int index;
     public List<JoinGateObject> inObject = new ArrayList<>();
     public List<JoinGateObject> outObject = new ArrayList<>();
+    /**
+     ** Konstruktor obiektu  
+     * @param state stan logiczny obiektu
+     * @param label oznaczenie obiektu, standardowo POINT
+     * @param index identyfikator obiektu
+     * @param arg0 współrzędna x
+     * @param arg1 współrzędna y
+     */
     public LogicPoint(boolean state, String label, int index, double arg0, double arg1) {
         super(arg0, arg1, 25, 25);
         this.state = state;
         this.label = label;
         this.index = index;
     }
-    
-    public void drawGate(Graphics2D g2){
+    /**
+     *Metoda która odpowiada za rysowanie punktu 
+     * @param g2 parametr dzięki któremy będziemy mogli rysować
+     */
+    public void drawPoint(Graphics2D g2){
      RenderingHints rh = new RenderingHints( RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
      rh.put(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY); 
      g2.setRenderingHints(rh);
@@ -37,15 +53,26 @@ public class LogicPoint extends Ellipse2D.Double{
      }
      g2.draw(this);
     }
+    /**
+     ** Metoda ustawia współrzęnde x i y. 
+     * @param x współrzędna x
+     * @param y współrzędna y.
+     */
     public void setXY(double x,double y) {
         this.x = x;
         this.y = y;
     }
-    
+    /**
+     ** Metoda która pozwala na ustawienie identyfikatora 
+     * @param index id na który chcemy zmienić nasz obiekt
+     */
     public void setIndex(int index) {
         this.index = index;
     }
-
+    /**
+     ** Metoda która zwraca identyfikator obiektu 
+     * @return identyfikator obiektu
+     */
     public int getIndex() {
         return index;
     }

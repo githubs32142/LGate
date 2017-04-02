@@ -16,7 +16,7 @@ public class JoinObject {
         return indexObject;
     }
 
-    public String getTyprOfObject() {
+    public String getTypeOfObject() {
         return typeOfObject;
     }
 
@@ -24,7 +24,7 @@ public class JoinObject {
         this.indexObject = indexObject;
     }
 
-    public void setTyprOfObject(String typrOfObject) {
+    public void setTypeOfObject(String typrOfObject) {
         this.typeOfObject = typrOfObject;
     }
 

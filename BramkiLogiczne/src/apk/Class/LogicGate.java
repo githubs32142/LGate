@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 public class LogicGate extends Rectangle2D.Double{
+    private boolean state;
     private String label;
     private int index;
     Rectangle2D.Double output2;
@@ -29,6 +30,7 @@ public class LogicGate extends Rectangle2D.Double{
         super(arg0, arg1, arg2, arg3);
         this.label = label;
         this.index = index;
+        state=false;
         if(!this.label.equals("NOT")){
          this.setInput(2);   
         }
@@ -360,7 +362,7 @@ public class LogicGate extends Rectangle2D.Double{
             return output.x+output.width;
         }
         if( label.equals("AND") || label.equals("XOR") || label.equals("OR")){
-            return output.x+output.width;
+            return output2.x+output2.width;
         }
         return 0.0;
     }
@@ -373,8 +375,15 @@ public class LogicGate extends Rectangle2D.Double{
             return output.y+(output.height/2);
         }
         if( label.equals("AND") || label.equals("XOR") || label.equals("OR")){
-             return output.y+(output.height/2);
+             return output2.y+(output2.height/2);
         }
         return 0.0;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+       public boolean getState() {
+        return state;
     }
 }
