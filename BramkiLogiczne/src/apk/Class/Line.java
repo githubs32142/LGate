@@ -51,7 +51,7 @@ public class Line {
         this.y2 = y2;
         makeLines();
     }
-    public void makeLines(){
+    private void makeLines(){
             lines.clear();
             lines.add(new Line2D.Double(x1, y1, x2-(Math.abs(x1-x2)/2) , y1));
             lines.add(new Line2D.Double(x2-(Math.abs(x1-x2)/2), y1, x2-(Math.abs(x1-x2)/2), y2));
@@ -68,5 +68,13 @@ public class Line {
          g2.draw(lines.get(i));
      }
     }
+     public boolean contains(int x, int y){
+         for(int i=0;i<lines.size();i++){
+             if(lines.get(i).intersects(x, y, 3, 3)){
+                 return true;
+             }
+         }
+         return false;
+     }
     
 }

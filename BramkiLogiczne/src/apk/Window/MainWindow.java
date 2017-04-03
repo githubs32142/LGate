@@ -5,8 +5,6 @@ import apk.Class.LogicGate;
 import apk.Class.LogicPoint;
 import apk.Window.MainWindow.Rysunki;
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
-import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -51,9 +49,9 @@ public class MainWindow extends javax.swing.JFrame {
     ObszarRoboczy obszarRysowania= new ObszarRoboczy();
     JScrollPane scroll=new JScrollPane();
     List<Rysunki> workSpace = new ArrayList<>();
-    String data[][]={{"Obiekt:", "-"},{"ID:", "-" },{"Ilość wejść:", "-" }};
+    String data[][]={{"Obiekt:", "-"},{"ID:", "-" },{"Ilość wejść:", "-" },{"Stan na wyjściu:","-"}};
     DefaultTableModel modelTable;
-    List<TableCellEditor> editors = new ArrayList<TableCellEditor>(3);
+    List<TableCellEditor> editors = new ArrayList<>(3);
     String[] items1 = { "2","3","4" };
     String[] items2 = { "1" };
     String[] items3 = { "true","false" };
@@ -115,33 +113,27 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1.setSize(240,200);
         jPanel1.add(jScrollPane1);
        this.add(BorderLayout.WEST,jPanel1);
-        comboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate;
-                
-                if(index>=0){
-                    if(!(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("XOR") || workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("NXOR"))){
-                     workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
-                    } 
-                    repaint();
+        comboBox1.addActionListener((ActionEvent ae) -> {
+            int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate;
+            
+            if(index>=0){
+                if(!(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("XOR") || workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("NXOR"))){
+                    workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
                 }
+                repaint();
             }
         });
-        comboBox3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-               int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexPoint;
-                if(index>=0){
-                    if(comboBox3.getSelectedIndex()==0){
-                        workSpace.get(obszarRysowania.getSelectedIndex()).points.get(index).setState(true);
-                    }
-                else{
-                        workSpace.get(obszarRysowania.getSelectedIndex()).points.get(index).setState(false);
-                    }
-                    
-                    repaint();
+        comboBox3.addActionListener((ActionEvent ae) -> {
+            int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexPoint;
+            if(index>=0){
+                if(comboBox3.getSelectedIndex()==0){
+                    workSpace.get(obszarRysowania.getSelectedIndex()).points.get(index).setState(true);
                 }
+                else{
+                    workSpace.get(obszarRysowania.getSelectedIndex()).points.get(index).setState(false);
+                }
+                
+                repaint();
             }
         });
         addWorkSpace();
@@ -174,6 +166,7 @@ public class MainWindow extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -200,12 +193,22 @@ public class MainWindow extends javax.swing.JFrame {
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jButton3);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/openfile.png"))); // NOI18N
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jButton2);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apk/Resource/open.png"))); // NOI18N
@@ -376,10 +379,19 @@ public class MainWindow extends javax.swing.JFrame {
             .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jMenu1.setText("File");
+        jMenu1.setText("Plik");
+
+        jMenuItem1.setText("Nowe okno");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Edycja");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -505,21 +517,21 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
     /**
-     ** Metoda ta dodaje obszar rysowania do programu 
+     ** Metoda  dodaje obszar rysowania na którym możemy rysować bramki logiczne
      */
     private  void addWorkSpace(){
         workSpace.add(new Rysunki());
         workSpace.get(workSpace.size()-1).setPreferredSize(new Dimension(2000, 3000));
         workSpace.get(workSpace.size()-1).setBackground(Color.white);
-        JScrollPane scroll=new JScrollPane();
-        scroll.getViewport().setView(workSpace.get(workSpace.size()-1));
-        scroll.setHorizontalScrollBarPolicy(
+        JScrollPane scrollTab=new JScrollPane();
+        scrollTab.getViewport().setView(workSpace.get(workSpace.size()-1));
+        scrollTab.setHorizontalScrollBarPolicy(
         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scroll.setVerticalScrollBarPolicy(
+        scrollTab.setVerticalScrollBarPolicy(
         ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         this.add(BorderLayout.CENTER,obszarRysowania);
         obszarRysowania.setVisible(true);
-        obszarRysowania.addTab("Obszar rysowania "+String.valueOf(workSpace.size()),scroll);
+        obszarRysowania.addTab("Obszar rysowania "+String.valueOf(workSpace.size()),scrollTab);
     }
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         toolsDrawing="NOT";
@@ -592,6 +604,18 @@ int id=0;
         workSpace.get(obszarRysowania.getSelectedIndex()).indexPoint=-1;
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+      addWorkSpace();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -627,15 +651,16 @@ int id=0;
                    index=retunrLogicGate(me.getX(), me.getY());
                    indexGate=index;
                    if(index>=0){
-                       System.out.println(returnStateOutput(index));
                        data[0][1]=logicGate.get(index).getLabel();
                        data[1][1]= String.valueOf(logicGate.get(index).getIndex());
                        data[2][0]="Ilość wejść";
                        data[2][1]= String.valueOf(logicGate.get(index).getInput());
+                       data[3][1]= String.valueOf(logicGate.get(index).getState());
                        modelTable.setRowCount(0);
                        modelTable.addRow(data[0]);
                        modelTable.addRow(data[1]);
                        modelTable.addRow(data[2]);
+                       modelTable.addRow(data[3]);
                        indexPoint=-1;
                    }
                    else{
@@ -653,7 +678,19 @@ int id=0;
                        modelTable.addRow(data[2]);
                    }
                     else{
-                       modelTable.setRowCount(0);
+                           if(returnLine(me.getX(), me.getY())>=0){
+                               indexPoint=-1;
+                               index=returnLine(me.getX(), me.getY());
+                               data[0][1]=linePoint.get(index).getLabel();
+                               data[1][1]= String.valueOf(linePoint.get(index).getIndex());
+                               modelTable.setRowCount(0);
+                               modelTable.addRow(data[0]);
+                               modelTable.addRow(data[1]);
+                           }
+                            else{
+                               modelTable.setRowCount(0);
+                           }
+                       
                    } 
                    }
                }        
@@ -799,7 +836,6 @@ int id=0;
                           index=retunrLogicGateInput(me.getX(),me.getY());
                        index2=logicGate.get(index).returnInput(me.getX(),me.getY());
                        if(!logicGate.get(index).containInPoint(index2)){
-                           //zle
                            logicGate.get(index).addObject(logicGate.get(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)).getIndex(),index2,linePoint.get(linePoint.size()-1).getIndex(), "GATE", "INPUT");
                            logicGate.get(retunrLogicGateOutput(beginingPoint.x, beginingPoint.y)).addObject(logicGate.get(index).getIndex(),-1,linePoint.get(linePoint.size()-1).getIndex() ,"GATE", "OUTPUT");
                            ifAdd=true;
@@ -862,6 +898,7 @@ int id=0;
          g2D.setStroke(new BasicStroke(1.2f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_MITER));
          g2D.setColor(Color.RED);
          for(int i=0;i<logicGate.size();i++){
+             logicGate.get(i).setState(returnStateOutput(i));
               BufferedImage image= null;
         try {
             if(logicGate.get(i).getLabel().equals("NOT")){
@@ -921,19 +958,12 @@ int id=0;
                        logicGate.get(indexGate).setXY(evt.getX()-moveX, evt.getY()-moveY);
                        for(int i=0;i<logicGate.get(indexGate).inObject.size();i++){
                            int indexLine=returnPositonLines(logicGate.get(indexGate).inObject.get(i).getIndexLine());
-                           System.out.println("Bramka"+indexLine);
-                           if(indexLine>=0) {
-                          // linePoint.get(indexLine).x2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).x;
-                          // linePoint.get(indexLine).y2=logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).y;
-                           //linePoint.get(indexLine).makeLines();  
+                           if(indexLine>=0) { 
                            linePoint.get(indexLine).setXY2(logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).x, logicGate.get(indexGate).in.get(logicGate.get(indexGate).inObject.get(i).getIndexOfPosition()).y);
                            }
                        }
                        for(int i=0;i<logicGate.get(indexGate).outObject.size();i++){
                             int indexLine=returnPositonLines(logicGate.get(indexGate).outObject.get(i).getIndexLine());
-                          // linePoint.get(indexLine).x1=logicGate.get(indexGate).outputPositionX();
-                          // linePoint.get(indexLine).y1=logicGate.get(indexGate).outputPositionY();
-                         //  linePoint.get(indexLine).makeLines();
                            linePoint.get(indexLine).setXY1(logicGate.get(indexGate).outputPositionX(), logicGate.get(indexGate).outputPositionY());
                        }
                        repaint();
@@ -943,12 +973,8 @@ int id=0;
                        points.get(indexPoint).setXY(evt.getX()-moveX, evt.getY()-moveY);
                         for(int i=0;i<points.get(indexPoint).outObject.size();i++){
                             int indexLine=returnPositonLines(points.get(indexPoint).outObject.get(i).getIndexLine());
-                          // linePoint.get(indexLine).x1=logicGate.get(indexGate).outputPositionX();
-                          // linePoint.get(indexLine).y1=logicGate.get(indexGate).outputPositionY();
-                         //  linePoint.get(indexLine).makeLines();
                            linePoint.get(indexLine).setXY1(points.get(indexPoint).x+points.get(indexPoint).width,points.get(indexPoint).y+(points.get(indexPoint).height/2));
                        }
-                       repaint();
                     }
                    }
                    
@@ -958,6 +984,20 @@ int id=0;
         @Override
         public void mouseMoved(MouseEvent me) {
             
+        }
+        /**
+         ** Metoda która sprawdza, czy na podanych współrzędnych znajduje się linia 
+         * @param x współrzędna x
+         * @param y współrzędna y
+         * @return indeks obiektu znajdujący się na liście
+         */
+        public int returnLine(int x, int y){
+            for(int i=0;i<linePoint.size();i++){
+                if(linePoint.get(i).contains(x, y)){
+                    return i;
+                }
+            }
+            return -1;
         }
         /**
          ** Metoda która sprawdza, czy na podanych współrzędnych znajduje się bramka logiczna 
@@ -974,7 +1014,7 @@ int id=0;
                return -1;
         }
         /**
-         ** Metoda zwraca która sprawdza, czy podane wspołrzędne znajdują się na wyjściu bramki lodicznej 
+         ** Metoda zwraca która sprawdza, czy podane wspołrzędne znajdują się na wyjściu bramki logicznej 
          * @param x współrzędna x
          * @param y współrzędna y
          * @return  indeks obiektu znajdujący się na liście
@@ -1018,7 +1058,7 @@ int id=0;
         /**
          ** Metoda zwraca nam pozycję na liście linii o podanym indeksie 
          * @param index
-         * @return 
+         * @return  
          */
         public int returnPositonLines(int index){
             for(int i=0;i<linePoint.size();i++){
@@ -1028,6 +1068,11 @@ int id=0;
             }
             return -1;
         }
+        /**
+         ** Metoda która zwraca stan logiczny( true, false) bramki logicznej  
+         * @param i - położenie na liście bramki
+         * @return stan logiczny true- jeżeli prawda false jeżeli nieprawda
+         */
         public boolean returnStateOutput(int i){
             int counter=0,counterInput=0;
            // for(int i=0;i<=logicGate.size();i++){
@@ -1061,8 +1106,8 @@ int id=0;
                 if(logicGate.get(i).getLabel().equals("AND") || logicGate.get(i).getLabel().equals("NOR") ){
                 return counterInput==counter;
                 }
-                if(logicGate.get(i).getLabel().equals("NOT")  ){
-                return counterInput != 1;
+                if(logicGate.get(i).getLabel().equals("NOT")  ){// neguj stan logiczny
+                return counterInput != 1;// jeżeli 1 to false, jeżeli 0 to true 
                 }
                 if(logicGate.get(i).getLabel().equals("XOR")  ){
                 return counterInput%2!=0;
@@ -1129,8 +1174,7 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
         if(rectangle.contains(me.getX(),me.getY()))
         {
             if (zaznaczenie >0){   
-               // workSpace.remove(zaznaczenie);
-		
+                //workSpace.remove(zaznaczenie);
             }
             zaznaczenie = obszar.getSelectedIndex(); 
         }
@@ -1141,7 +1185,7 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
     pozycjaKursoraY = me.getY();
     zaznaczenie=CzyObszarRysowania(pozycjaKursoraX, pozycjaKursoraY);
     if(zaznaczenie>=0){
-//        ustawKursor();
+        ustawKursor();
         obszar.repaint();
     } 
     }
@@ -1164,11 +1208,8 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
                 if(!obszar.getTitleAt(zaznaczenie).equals("Diagram     ")){
                     if(zaznaczenie >=0)
                 {
-               // if(workSpace.get(zaznaczenie).choisedNet==0)
-               // {
-                //    obszar.setToolTipTextAt(zaznaczenie,"PT-sieć");
-               // }
-                                }
+                    obszar.setToolTipTextAt(zaznaczenie,"Rysuj bramki logiczne");
+                 }
                 }				
             }
         }
@@ -1231,6 +1272,7 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparator1;
