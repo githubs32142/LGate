@@ -578,9 +578,12 @@ public class MainWindow extends javax.swing.JFrame {
         siatka=!siatka;
         repaint();
     }//GEN-LAST:event_jToggleButton5ActionPerformed
-
+    /**
+     ** Kliknięcie na przycisk rysuj punkty  
+     * @param evt słuchacz
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-int id=0;
+    int id=0;
         if(data[0][1].equals("POINT")){
             try{
                 id=Integer.parseInt(data[1][1]);
@@ -715,6 +718,7 @@ int id=0;
                        indexPoint=-1;
                        moveX=me.getX()-logicGate.get(indexGate).x;
                        moveY=me.getY()-logicGate.get(indexGate).y;
+                       
                    }
                     else{
                         if(retunrPoint(me.getX(),me.getY())>=0){
@@ -732,6 +736,7 @@ int id=0;
            public void mouseReleased(MouseEvent me) {
            int index=0;
            int index2=0;
+           int indexPt=0;
            boolean ifAdd=false;
            if(!toolsDrawing.equals("TOUCH")){
                if(retunrLogicGate(me.getX(), me.getY())<0){
@@ -824,6 +829,24 @@ int id=0;
                            logicGate.get(index).addObject(points.get(retunrPoint(beginingPoint.x, beginingPoint.y)).getIndex(),index2,linePoint.get(linePoint.size()-1).getIndex(), "POINT", "INPUT");
                            points.get(retunrPoint(beginingPoint.x, beginingPoint.y)).addObject(logicGate.get(index).getIndex(), -1, linePoint.get(linePoint.size()-1).getIndex(),"GATE", "OUTPUT");
                            ifAdd=true;
+                           
+                       for(int i=0;i<logicGate.get(index).inObject.size();i++){
+                           int indexLine=returnPositonLines(logicGate.get(index).inObject.get(i).getIndexLine());
+                           if(indexLine>=0) { 
+                           linePoint.get(indexLine).setXY2(logicGate.get(index).in.get(logicGate.get(index).inObject.get(i).getIndexOfPosition()).x, logicGate.get(index).in.get(logicGate.get(index).inObject.get(i).getIndexOfPosition()).y);
+                           }
+                       }
+                       for(int i=0;i<logicGate.get(index).outObject.size();i++){
+                            int indexLine=returnPositonLines(logicGate.get(index).outObject.get(i).getIndexLine());
+                           linePoint.get(indexLine).setXY1(logicGate.get(index).outputPositionX(), logicGate.get(index).outputPositionY());
+                       }
+                       indexPt=retunrPoint(beginingPoint.x, beginingPoint.y);
+                       for(int i=0;i<points.get(indexPt).outObject.size();i++){
+                            int indexLine=returnPositonLines(points.get(indexPt).outObject.get(i).getIndexLine());
+                           linePoint.get(indexLine).setXY1(points.get(indexPt).x+points.get(indexPt).width,points.get(indexPt).y+(points.get(indexPt).height/2));
+                       }
+                       
+                       
                        }
                         else{
                         ifAdd=false;   
