@@ -22,7 +22,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -43,7 +48,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame  {
     boolean siatka;
     String toolsDrawing;
     ObszarRoboczy obszarRysowania= new ObszarRoboczy();
@@ -167,6 +172,7 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -388,6 +394,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("jMenuItem2");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -618,6 +632,32 @@ public class MainWindow extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+       JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            FileOutputStream fileOut = null;
+           try {
+               File selectedFile = fileChooser.getSelectedFile();
+               fileOut = new FileOutputStream("/tmp/employee.ser");
+               ObjectOutputStream out = new ObjectOutputStream(fileOut);
+               out.writeObject(this);
+               out.close();
+           } catch (FileNotFoundException ex) {
+               Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (IOException ex) {
+               Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+           } finally {
+               try {
+                   fileOut.close();
+               } catch (IOException ex) {
+                   Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+               }
+           }
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -1147,7 +1187,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }	
     
-    class ObszarRoboczy extends JTabbedPane implements SwingConstants, Accessible {
+    class ObszarRoboczy extends JTabbedPane implements SwingConstants, Accessible, Serializable  {
         JToolBar toolBar= new JToolBar();    
 	private PanelObszaru PanelDoZamkniecia = new PanelObszaru(this);
         @Override
@@ -1296,6 +1336,7 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparator1;

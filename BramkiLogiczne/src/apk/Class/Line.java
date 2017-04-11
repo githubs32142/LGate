@@ -6,10 +6,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Line {
+public class Line  implements Serializable {
     List<Line2D.Double> lines = new ArrayList<>(4);
     public double x1,y1,x2,y2;
     private String label;

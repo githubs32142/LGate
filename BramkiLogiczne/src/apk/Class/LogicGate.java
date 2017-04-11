@@ -5,9 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-public class LogicGate extends Rectangle2D.Double{
+public class LogicGate extends Rectangle2D.Double  implements Serializable {
     private boolean state;
     private String label;
     private int index;

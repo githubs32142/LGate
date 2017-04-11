@@ -1,9 +1,12 @@
 package apk.Class;
+
+import java.io.Serializable;
+
 /**
  *
  * @author Andrzej Kierepka
  */
-public class JoinObject {
+public class JoinObject  implements Serializable  {
     private String typeOfObject;// typ obiektu który jest przyłączony np bramka czy też punkt
     private int indexObject; // indeks obiektu
 

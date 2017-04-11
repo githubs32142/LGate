@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package apk.Class;
+
+import java.io.Serializable;
+
 /**
  *
  * @author Andrzej Kierepka
  */
-public class JoinGateObject extends JoinObject{
+public class JoinGateObject extends JoinObject  implements Serializable {
     private int indexOfPosition;// indeks oznacza miejsce przyłączenia do bramki logicznej jak jest 
     private int indexLine;// indeks Lini z którą jesteśmy połączeni
     public JoinGateObject(int indexOfPosition,int indexLine, String typeOfObject, int indexObject) {
