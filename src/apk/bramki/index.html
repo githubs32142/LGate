@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="style/styl.css">
+	<title>Bramki Logiczne</title>
+</head>
+
+<body>
+
+<div class="zawart">
+	
+	<div class="header">
+		<img src="img/liniagóra.jpg">
+		<div>Bramki Logiczne</div>
+		<img src="img/liniasrod.jpg">
+	</div>
+
+	<div class="nav">
+		
+			<p ><a href="#AND">
+					Bramka AND
+				</a></p>
+				<p><a href="#NAND">
+					Bramka NAND
+				</a></p>
+				<p>
+					<a href="#OR">Bramka OR
+				</a></p>
+				<p>
+					<a href="#NOR">Bramka NOR
+				</a></p>
+				<p>
+					<a href="#XOR">Bramka EX-OR
+				</a></p>
+				<p>
+					<a href="#XNOR">Bramka EX-NOR
+				</a></p>
+				<p>
+					<a href="#NOT">Bramka NOT
+				</a></p>
+	</div>
+
+	<div class="article">
+		<h1 id=AND>Bramka AND</h1>
+		<p align="justify">Wyjście bramki logicznej AND jest w stanie wysokim tylko wtedy, gdy oba wejścia są w stanie wysokim. Symbol logiczny tej bramki i tablicę prawdy pokazano poniżej.<br>
+		dostępne są bramki AND 3- i 4-wejściowe (czasem o większej liczbie wejść). Na przykład, jeżeli 8-wejściowa bramka AND będzie miała wyjście w stanie wysokim tylko wtedy, gdy wszystkie wejścia będą w stanie wysokim. 
+		</p><p><b>Symbol Bramki</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Tabela prawdy</b>
+		<br><img src="img/bramkaAND.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><img src="img/tabprawdAND.png">
+		</p>
+		<p align="right">
+		<a href="#AND" align="right">Powrót</a>
+		</p>
+
+		
+		<h1 id=NAND>Bramka NAND</h1>
+		<p align="justify">Bramka NAND stanowi jakby połączenie bramki AND i NOT. Zero logiczne "0" na wyjściu jest ustawiane tylko wtedy gdy na obu wejściach jest jedynka logiczna "1". W pozostałych przypadkach na wyjściu zawsze jest stan "1". Można zauważyć, że jest ona dokładną odwrotnością bramki AND - porównaj tablice prawdy dla obu bramek. Również i ta bramka może mieć wiele wejść i tylko jedno wyjście. 
+		</p>
+		<p><b>Symbol Bramki</b><br><img src="img/bramkaNAND.png">
+		</p>
+		<p><b>Tabela prawdy</b><br><img src="img/tabprawdNAND.png">
+		</p>
+		<p align="right">
+		<a href="#AND">Powrót</a>
+		</p>
+
+		<h1 id=OR>Bramka OR</h1>
+		<p align="justify">Wyjście bramki OR (czyli LUB) jest w stanie wysokim, jeżeli jedno z wejść (lub oba) jest w stanie wysokim. W przypadku ogólnym bramki mogą mieć dowolną liczbę wejść, ale typowy układ scalony zawiera zwykle cztery bramki 2-wejściowe, trzy bramki 3-wejściowe lub dwie bramki 4-wejściowe. Na przykład, wejście 4-wejściowej bramki OR będzie w stanie wysokim, jeżeli przynajmniej jedno jej wejście będzie w stanie wysokim.  
+		</p><p><b>Symbol Bramki</b><br><img src="img/bramkaOR.png">
+		</p>
+		<p><b>Tabela prawdy</b><br><img src="img/tabprawdOR.png">
+		</p>
+		<p align="right">
+		<a href="#AND">Powrót</a>
+		</p>
+
+		<h1 id=NOR>Bramka NOR</h1>
+		<p>Bramka NOR jest odwrotnością bramki OR. Zero na wyjściu pojawia się zawsze wtedy, gdy choćby na jednym z wejść jest jedynka logiczna. Tylko wtedy, gdy wszystkie wejścia są ustawione w stan "0" na wyjściu pojawia się "1". 
+		</p><p><b>Symbol Bramki</b><br><img src="img/bramkaNOR.png">
+		</p>
+		<p><b>Tabela prawdy</b><br><img src="img/tabprawdNOR.png">
+		</p>
+		<p align="right">
+		<a href="#AND">Powrót</a>
+		</p>
+
+		<h1 id=XOR>Bramka EX-OR</h1>
+		<p align="justify">Exclusive-OR (XOR, czyli WYŁĄCZNIE NIE) jest ciekawą funkcją, chociaż mniej podstawową niż AND i OR. Wyjście bramki XOR jest w stanie wysokim, jeżeli jedno albo drugie wejście jest w stanie wysokim (jest to zawsze funkcja dwóch zmiennych). Bramka XOR realizuje dodawanie bitów modulo-2. 
+		</p><p><b>Symbol Bramki</b><br><img src="img/bramkaEX-OR.png">
+		</p>
+		<p><b>Tabela prawdy</b><br><img src="img/tabprawdEX-OR.png">
+		</p>
+		<p align="right">
+		<a href="#AND">Powrót</a>
+		</p>
+
+		<h1 id=XNOR>Bramka EX-NOR</h1>
+		<p align="justify">Bramka EX-NOR jest odwrotnością bramki EX-OR.
+		Wyjście bramki EX-NOR jest w stanie wysokim gdy oba wejścia są takie same.
+		</p><p><b>Symbol Bramki</b><br><img src="img/bramkaEX-NOR.png">
+		</p>
+		<p><b>Tabela prawdy</b><br><img src="img/tabprawdEX-NOR.png">
+		</p>
+		<p align="right"><a href="#AND">Powrót</a>
+		</p>
+
+		<h1 id=NOT>Bramka NOT</h1>
+		<p align="justify">Bramka NOT jest najprostrzą w działaniu bramką logiczną. Jej zadaniem jest odwracanie (negowanie) sygnału wejściowego. Gdy na wejściu ustawimy sygnał "1" to na wyjściu otrzymamy "0", a gdy na wejściu ustawimy "0" to na wyjściu pojawi się "1". Wejście bramki, wg przedstawionego poniżej symbolu graficznego, znajduje się po lewej stronie; po prawej jest jej wyjście. Bramka ta posiada tylko jedno wejście. 
+		</p><p><b>Symbol Bramki</b><br><img src="img/bramkaNOT.png">
+		</p>
+		<p><b>Tabela prawdy</b><br><img src="img/tabprawdNOT.png">
+		</p>
+		<p align="right">
+		<a href="#AND">Powrót</a>
+		</p>
+	</div>
+
+
+	<div class="footer">
+		<div><img src="img/liniadół.jpg"></div>
+		<p>Strona opracowana na podstawie książki "Układy Cyfrowe" autorstwa Wojciecha Głockiego</p>
+	</div>
+</div>
+</body>
+</html>

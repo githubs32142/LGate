@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+
+body {
+
+	}
+a { color: #FFD700; text-decoration: none;  }
+a:hover { background-color: grey;  }
+.zawart{
+		width: 1038px;
+		display: center;
+		margin: 0px auto;
+	}
+
+.header{	
+		font-size: 150px;
+		text-align: center;
+		font-family: Amatic SC;
+		color: #FFD700;
+
+} 
+.nav{
+	float: left;
+	font-family: Amatic SC;
+	font-size:  50px;
+	width: 300px;
+}
+
+	
+
+
+
+.article{ 
+	float: right;
+	width: 738px;
+
+}
+.article a { color: black; text-decoration: none; font-weight: bold; font-style: italic; font-family: Amatic SC; font-size: 20px;}
+.article a:hover { background-color:grey; padding: 5px;  font-weight: bold; }
+.article img{/*border-color: red; border-style: double;*/width:255px; }
+
+.footer{float: left;
+	
+	
+
+}
