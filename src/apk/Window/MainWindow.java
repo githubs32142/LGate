@@ -127,8 +127,7 @@ public class MainWindow extends javax.swing.JFrame  {
         jPanel1.add(jScrollPane1);
        this.add(BorderLayout.WEST,jPanel1);
         comboBox1.addActionListener((ActionEvent ae) -> {
-            int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate;
-            
+            int index=workSpace.get(obszarRysowania.getSelectedIndex()).indexGate; 
             if(index>=0){
                 if(!(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("XOR") || workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).getLabel().equals("NXOR"))){
                     workSpace.get(obszarRysowania.getSelectedIndex()).logicGate.get(index).setInput(Integer.parseInt(String.valueOf(comboBox1.getSelectedItem())));
@@ -149,7 +148,6 @@ public class MainWindow extends javax.swing.JFrame  {
                 repaint();
             }
         });
-        addWorkSpace();
     }
 
     @SuppressWarnings("unchecked")
@@ -186,7 +184,7 @@ public class MainWindow extends javax.swing.JFrame  {
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Symulator bramek logicznych");
+        setTitle("LOGAS");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 1, new java.awt.Color(0, 0, 0)));
 
@@ -456,7 +454,7 @@ public class MainWindow extends javax.swing.JFrame  {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-/**
+    /**
      ** Metoda która usuwa powiązania lini wraz z linią 
      * @param indexLine indeks Lini której powiązanie chcemy usunąć
      */
@@ -662,7 +660,7 @@ public class MainWindow extends javax.swing.JFrame  {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
        JFileChooser saveDialog = new JFileChooser();
-        saveDialog.setDialogTitle("LOGOS");
+        saveDialog.setDialogTitle("LOGAS");
         if (saveDialog.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
                 if (obszarRysowania.getSelectedIndex() >= 0) {
@@ -682,7 +680,7 @@ public class MainWindow extends javax.swing.JFrame  {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
        JFileChooser otworz = new JFileChooser();
-        otworz.setDialogTitle("LOGOS");
+        otworz.setDialogTitle("LOGAS");
         if (otworz.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             ObjectInputStream pl;
             try {
@@ -1300,7 +1298,7 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
         rectangle.y = Yzamkniecia;
         if(rectangle.contains(me.getX(),me.getY()))
         {
-            if (zaznaczenie >0){   
+            if (zaznaczenie >=0){   
                 workSpace.remove(zaznaczenie);
                 obszar.removeTabAt(zaznaczenie);
             }
@@ -1369,8 +1367,7 @@ private class PanelObszaru implements MouseListener, MouseMotionListener  {
             g2.drawLine(x, y+2, x + szerokosc, y+2 + wysokosc);
             g2.drawLine(x + szerokosc, y+2, x, y+2 + wysokosc);  
             } 
-            
-            
+           
         }
                         
     }		private boolean CzyObszarZamkniecia(int x, int y) {
