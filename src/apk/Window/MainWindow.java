@@ -52,6 +52,7 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
@@ -229,6 +230,11 @@ public class MainWindow extends javax.swing.JFrame  {
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jToolBar2.add(jButton1);
         jToolBar2.add(jSeparator1);
 
@@ -572,6 +578,102 @@ public class MainWindow extends javax.swing.JFrame  {
         obszarRysowania.setVisible(true);
         obszarRysowania.addTab("Obszar rysowania "+String.valueOf(workSpace.size()),scrollTab);
     }
+    /**
+     ** Metoda wykonuje zapis projektu 
+     */
+    public void saveProject(){
+               JFileChooser saveDialog = new JFileChooser();
+        saveDialog.setDialogTitle("Zapisz projekt");
+        UIManager.put("FileChooser.saveDialogTitleText", "Zapisz");
+        UIManager.put("FileChooser.saveInLabelText", "Zapisz w");
+        UIManager.put("FileChooser.saveButtonText", "Zapisz");
+        UIManager.put("FileChooser.cancelButtonText", "Zamknij");
+        UIManager.put("FileChooser.fileNameLabelText", "Nazwa pliku:");
+        UIManager.put("FileChooser.filesOfTypeLabelText", "Typ pliku");
+        UIManager.put("FileChooser.openButtonToolTipText", "Otwórz zaznaczony plik");
+        UIManager.put("FileChooser.cancelButtonToolTipText","Zamknij okno");
+        UIManager.put("FileChooser.fileNameHeaderText","Nazwa pliku");
+        UIManager.put("FileChooser.upFolderToolTipText", "Folder wyżej");
+        UIManager.put("FileChooser.homeFolderToolTipText","Pulpit");
+        UIManager.put("FileChooser.newFolderToolTipText","Utwórz nowy folder");
+        UIManager.put("FileChooser.listViewButtonToolTipText","Lista");
+        UIManager.put("FileChooser.newFolderButtonText","Utwórz nowy folder");
+        UIManager.put("FileChooser.renameFileButtonText", "Zmień nazwę pliku");
+        UIManager.put("FileChooser.deleteFileButtonText", "Usuń plik");
+        UIManager.put("FileChooser.filterLabelText", "Typ pliku");
+        UIManager.put("FileChooser.detailsViewButtonToolTipText", "Szczegóły");
+        UIManager.put("FileChooser.fileSizeHeaderText","Rozmiar");
+        UIManager.put("FileChooser.fileDateHeaderText", "Data modyfikacji");
+        SwingUtilities.updateComponentTreeUI(saveDialog);
+        if (saveDialog.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            try {
+                if (obszarRysowania.getSelectedIndex() >= 0) {
+                    ObjectOutputStream pl;
+                    FileOutputStream and = new FileOutputStream(saveDialog.getSelectedFile());
+                    pl = new ObjectOutputStream(and);
+                    pl.writeObject(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate);
+                    pl.writeObject(workSpace.get(obszarRysowania.getSelectedIndex()).points);
+                    pl.writeObject(workSpace.get(obszarRysowania.getSelectedIndex()).linePoint);
+                    pl.close();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    /**
+     ** Metoda któa umożliwia otwarcie projektu 
+     */
+    public void openProject(){
+        JFileChooser otworz = new JFileChooser();
+       otworz.setDialogTitle("Otwórz projekt");
+        UIManager.put("FileChooser.openDialogTitleText", "Otwórz");
+        UIManager.put("FileChooser.lookInLabelText", "Zobacz w");
+        UIManager.put("FileChooser.openButtonText", "Otwórz");
+        UIManager.put("FileChooser.cancelButtonText", "Zamknij");
+        UIManager.put("FileChooser.fileNameLabelText", "Nazwa pliku:");
+        UIManager.put("FileChooser.filesOfTypeLabelText", "Typ pliku");
+        UIManager.put("FileChooser.openButtonToolTipText", "Otwórz zaznaczony plik");
+        UIManager.put("FileChooser.cancelButtonToolTipText","Zamknij okno");
+        UIManager.put("FileChooser.fileNameHeaderText","Nazwa pliku");
+        UIManager.put("FileChooser.upFolderToolTipText", "Folder wyżej");
+        UIManager.put("FileChooser.homeFolderToolTipText","Pulpit");
+        UIManager.put("FileChooser.newFolderToolTipText","Utwórz nowy folder");
+        UIManager.put("FileChooser.listViewButtonToolTipText","Lista");
+        UIManager.put("FileChooser.newFolderButtonText","Utwórz nowy folder");
+        UIManager.put("FileChooser.renameFileButtonText", "Zmień nazwę pliku");
+        UIManager.put("FileChooser.deleteFileButtonText", "Usuń plik");
+        UIManager.put("FileChooser.filterLabelText", "Typ pliku");
+        UIManager.put("FileChooser.detailsViewButtonToolTipText", "Szczegóły");
+        UIManager.put("FileChooser.fileSizeHeaderText","Rozmiar");
+        UIManager.put("FileChooser.fileDateHeaderText", "Data modyfikacji");
+        SwingUtilities.updateComponentTreeUI(otworz);
+        if (otworz.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            ObjectInputStream pl;
+            try {
+                FileInputStream and = new FileInputStream(otworz.getSelectedFile());
+                try {
+                    pl = new ObjectInputStream(and);
+                    try {
+                        if (obszarRysowania.getSelectedIndex() >= 0) {
+                            workSpace.get(obszarRysowania.getSelectedIndex()).logicGate = (List<LogicGate>)  (pl.readObject());
+                            workSpace.get(obszarRysowania.getSelectedIndex()).points = (List<LogicPoint>) (pl.readObject());
+                            workSpace.get(obszarRysowania.getSelectedIndex()).linePoint = (List<Line>) (pl.readObject());
+                        }
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                } catch (IOException ex) {
+                    Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        repaint();
+    }
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         toolsDrawing="NOT";
     }//GEN-LAST:event_jToggleButton1ActionPerformed
@@ -651,61 +753,19 @@ public class MainWindow extends javax.swing.JFrame  {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        openProject();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+       addWorkSpace();   
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-       JFileChooser saveDialog = new JFileChooser();
-        saveDialog.setDialogTitle("LOGAS");
-        if (saveDialog.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            try {
-                if (obszarRysowania.getSelectedIndex() >= 0) {
-                    ObjectOutputStream pl;
-                    FileOutputStream and = new FileOutputStream(saveDialog.getSelectedFile());
-                    pl = new ObjectOutputStream(and);
-                    pl.writeObject(workSpace.get(obszarRysowania.getSelectedIndex()).logicGate);
-                    pl.writeObject(workSpace.get(obszarRysowania.getSelectedIndex()).points);
-                    pl.writeObject(workSpace.get(obszarRysowania.getSelectedIndex()).linePoint);
-                    pl.close();
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        saveProject();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-       JFileChooser otworz = new JFileChooser();
-        otworz.setDialogTitle("LOGAS");
-        if (otworz.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            ObjectInputStream pl;
-            try {
-                FileInputStream and = new FileInputStream(otworz.getSelectedFile());
-                try {
-                    pl = new ObjectInputStream(and);
-                    try {
-                        if (obszarRysowania.getSelectedIndex() >= 0) {
-                            workSpace.get(obszarRysowania.getSelectedIndex()).logicGate = (List<LogicGate>)  (pl.readObject());
-                            workSpace.get(obszarRysowania.getSelectedIndex()).points = (List<LogicPoint>) (pl.readObject());
-                            workSpace.get(obszarRysowania.getSelectedIndex()).linePoint = (List<Line>) (pl.readObject());
-                        }
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                } catch (IOException ex) {
-                    Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        repaint();
+        openProject();
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -720,6 +780,10 @@ public class MainWindow extends javax.swing.JFrame  {
         }
         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       saveProject();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         try {
